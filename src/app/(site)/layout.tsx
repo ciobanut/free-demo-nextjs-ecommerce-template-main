@@ -52,6 +52,7 @@ export default function RootLayout({
             <Footer />
           </>
         )}
+        <script src="https://cdn-behavora.alexweb.md/widget/loader.js" data-site-id="site_XsWxm9OtWH" data-api-url="https://app-behavora.alexweb.md" data-title="Personalized offer!" data-message="Complete the purchase in the next 5 minutes and get a 5% discount!" data-cta-text="Get discount" data-cta-url="/" data-background-color="#28a745" data-position="bottom-right" ></script>
       </body>
     </html>
   );
