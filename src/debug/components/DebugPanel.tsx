@@ -16,14 +16,14 @@ const DebugPanel: React.FC = () => {
   usePageMetrics();
   useNetworkLogger();
 
-  // Auto-collapse on mobile, auto-expand on desktop
+  // Keep the panel collapsed by default; only auto-collapse on mobile.
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth < 768;
-      dispatch(setCollapsed(isMobile));
+      if (isMobile) dispatch(setCollapsed(true));
     };
 
-    // Set initial state
+    // Ensure it stays collapsed on mobile at mount.
     handleResize();
 
     window.addEventListener('resize', handleResize);

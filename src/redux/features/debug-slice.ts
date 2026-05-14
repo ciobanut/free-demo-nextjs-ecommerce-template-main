@@ -14,7 +14,7 @@ const initialState: DebugState = {
         timeOnPageMs: 0,
         referrer: null,
     },
-    isCollapsed: false, // false = expanded, true = collapsed
+    isCollapsed: true, // false = expanded, true = collapsed
 };
 
 const debugSlice = createSlice({

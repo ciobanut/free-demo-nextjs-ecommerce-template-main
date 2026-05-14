@@ -5,7 +5,10 @@ import Image from "next/image";
 import Newsletter from "../Common/Newsletter";
 import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useAppSelector } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "@/redux/features/cart-slice";
+import { Product } from "@/types/product";
 
 const ShopDetails = () => {
   const [activeColor, setActiveColor] = useState("blue");
@@ -75,12 +78,16 @@ const ShopDetails = () => {
 
   const colors = ["red", "blue", "orange", "pink", "purple"];
 
+  const dispatch = useDispatch<AppDispatch>();
+
   const alreadyExist = localStorage.getItem("productDetails");
   const productFromStorage = useAppSelector(
     (state) => state.productDetailsReducer.value
   );
 
-  const product = alreadyExist ? JSON.parse(alreadyExist) : productFromStorage;
+  const product: Product = alreadyExist
+    ? (JSON.parse(alreadyExist) as Product)
+    : productFromStorage;
 
   useEffect(() => {
     localStorage.setItem("productDetails", JSON.stringify(product));
@@ -89,6 +96,16 @@ const ShopDetails = () => {
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
     openPreviewModal();
+  };
+
+  // add to cart
+  const handleAddToCart = () => {
+    dispatch(
+      addItemToCart({
+        ...product,
+        quantity,
+      })
+    );
   };
 
   return (
@@ -664,12 +681,13 @@ const ShopDetails = () => {
                         </button>
                       </div>
 
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={handleAddToCart}
                         className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
                       >
-                        Purchase Now
-                      </a>
+                        Add to cart
+                      </button>
 
                       <a
                         href="#"
