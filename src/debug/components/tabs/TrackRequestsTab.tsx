@@ -91,10 +91,10 @@ const TrackRequestsTab: React.FC = () => {
                                         {formatTimestamp(request.timestamp)}
                                     </span>
                                     <span className={`text-xs px-2 py-1 rounded ${request.status && request.status >= 200 && request.status < 300
-                                            ? 'bg-green-100 text-green-800'
-                                            : request.status
-                                                ? 'bg-red-100 text-red-800'
-                                                : 'bg-yellow-100 text-yellow-800'
+                                        ? 'bg-green-100 text-green-800'
+                                        : request.status
+                                            ? 'bg-red-100 text-red-800'
+                                            : 'bg-yellow-100 text-yellow-800'
                                         }`}>
                                         {request.status || 'ERR'}
                                     </span>
