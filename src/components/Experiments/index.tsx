@@ -1,132 +1,36 @@
 'use client'
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Breadcrumb from "../Common/Breadcrumb";
-import { useEnvironment } from "@/app/context/EnvironmentContext";
-import { getEnvironmentConfig } from "@/config/environments";
-
-const PAGE_URL = 'http://localhost:3000/blogs/blog-grid'
+import { useEffect, useState } from 'react'
 
 const Experiments = () => {
-  const { currentEnvironment, setEnvironment } = useEnvironment();
-  const envConfig = getEnvironmentConfig(currentEnvironment);
-  const TRACK_ENDPOINT = `${envConfig.apiBaseUrl}/api/v1/track`;
 
-  const [visitorId, setVisitorId] = useState<string | null>(null)
-  const [trackRequests, setTrackRequests] = useState(0)
-  const [visitorCount, setVisitorCount] = useState<number>(1)
-  const [isSimulating, setIsSimulating] = useState(false)
-  const [totalSimulated, setTotalSimulated] = useState(0)
-  const [simulationError, setSimulationError] = useState<string | null>(null)
-  const intervalRef = useRef<number | null>(null)
+    const [visitorId, setVisitorId] = useState<string | null>(null)
+    const [trackRequests, setTrackRequests] = useState(0)
 
-  const getRandomArrayItem = (items: string[]) => items[Math.floor(Math.random() * items.length)]
+    useEffect(() => {
+        const id = localStorage.getItem('jp_user_id')
+        setVisitorId(id)
+        
+        const originalFetch = window.fetch
 
-  const buildRandomPayload = () => {
-    const now = Date.now()
-    const visitorSuffix = Math.random().toString(36).slice(2, 10)
-    const sessionSuffix = Math.random().toString(36).slice(2, 10)
+        window.fetch = async (...args) => {
+            const [resource] = args
 
-    return {
-      visitor_id: `user_${now}_${visitorSuffix}`,
-      page_url: PAGE_URL,
-      time_spent: Math.floor(Math.random() * 4000) + 100,
-      device: getRandomArrayItem(['desktop', 'mobile', 'tablet']),
-      traffic_source: getRandomArrayItem(['internal', 'organic', 'referral', 'paid']),
-      is_returning_user: Math.random() < 0.5,
-      max_scroll_percent: Math.floor(Math.random() * 81) + 20,
-      geo: {
-        country: getRandomArrayItem(['RO', 'US', 'DE', 'FR', 'IT']),
-      },
-      action: 'heartbeat',
-      session_id: `session_${now}_${sessionSuffix}`,
-    }
-  }
+            if (
+                typeof resource === 'string' &&
+                resource.includes('https://app-behavora.alexweb.md/api/v1/track')
+            ) {
+                setTrackRequests(prev => prev + 1)
+            }
 
-  const sendTrackRequests = async (count: number) => {
-    setSimulationError(null)
-    const payloads = Array.from({ length: count }, () => buildRandomPayload())
+            return originalFetch(...args)
+        }
 
-    const responses = await Promise.allSettled(
-      payloads.map((payload) =>
-        fetch(TRACK_ENDPOINT, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Site-Id': envConfig.siteId,
-           },
-          body: JSON.stringify(payload),
-        })
-      )
-    )
-
-    const failed = responses.filter((result) => result.status === 'rejected').length
-    setTotalSimulated((prev) => prev + count)
-
-    if (failed > 0) {
-      setSimulationError(`${failed} request(s) failed during this cycle.`)
-    }
-  }
-
-  const startSimulation = () => {
-    if (visitorCount < 1) {
-      setSimulationError('Enter a valid visitor count of 1 or more.')
-      return
-    }
-
-    if (isSimulating) {
-      return
-    }
-
-    setSimulationError(null)
-    setIsSimulating(true)
-    setTotalSimulated(0)
-
-    sendTrackRequests(visitorCount)
-
-    intervalRef.current = window.setInterval(() => {
-      void sendTrackRequests(visitorCount)
-    }, 10000)
-  }
-
-  const stopSimulation = () => {
-    if (intervalRef.current !== null) {
-      window.clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    setIsSimulating(false)
-  }
-
-  useEffect(() => {
-    const id = localStorage.getItem('jp_user_id')
-    setVisitorId(id)
-
-    const originalFetch = window.fetch
-
-    window.fetch = async (...args) => {
-      const [resource] = args
-
-      if (
-        typeof resource === 'string' &&
-        resource.includes(TRACK_ENDPOINT)
-      ) {
-        setTrackRequests(prev => prev + 1)
-      }
-
-      return originalFetch(...args)
-    }
-
-    return () => {
-      window.fetch = originalFetch
-    }
-  }, [])
-
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current !== null) {
-        window.clearInterval(intervalRef.current)
-      }
-    }
-  }, [])
+        return () => {
+            window.fetch = originalFetch
+        }
+    }, [])
   return (
     <>
       <Breadcrumb title={"Experiments"} pages={["experiments"]} />
@@ -144,30 +48,6 @@ const Experiments = () => {
               <div className="p-4 sm:p-7.5">
                 <div className="flex flex-col gap-4">
 
-                  <div className="flex items-center justify-between gap-3 pb-3 border-b border-gray-3">
-                    <span className="text-sm font-medium text-dark">Environment:</span>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setEnvironment('dev')}
-                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${currentEnvironment === 'dev'
-                            ? 'bg-blue text-white'
-                            : 'bg-gray-1 text-dark hover:bg-gray-200'
-                          }`}
-                      >
-                        Dev
-                      </button>
-                      <button
-                        onClick={() => setEnvironment('prod')}
-                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${currentEnvironment === 'prod'
-                            ? 'bg-blue text-white'
-                            : 'bg-gray-1 text-dark hover:bg-gray-200'
-                          }`}
-                      >
-                        Prod
-                      </button>
-                    </div>
-                  </div>
-
                   <p className="flex items-center gap-4">
                     <small>visitor_id: </small>
                     {visitorId}
@@ -177,57 +57,6 @@ const Experiments = () => {
                     <small>Track requests: </small>
                     {trackRequests}
                   </p>
-
-                  <p className="flex items-center gap-4">
-                    <small>Status:</small>
-                    <span>{isSimulating ? 'Running' : 'Stopped'}</span>
-                  </p>
-
-                  <p className="flex items-center gap-4">
-                    <small>Total simulated:</small>
-                    {totalSimulated}
-                  </p>
-
-                  <div className="space-y-3 pt-3">
-                    <div>
-                      <label htmlFor="visitorCount" className="block mb-2.5 text-sm font-medium text-dark">
-                        Visitors to simulate
-                      </label>
-                      <input
-                        type="number"
-                        id="visitorCount"
-                        min={1}
-                        value={visitorCount}
-                        disabled={isSimulating}
-                        onChange={(event) => setVisitorCount(Math.max(1, Number(event.target.value) || 1))}
-                        className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
-                      />
-                    </div>
-
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        type="button"
-                        onClick={startSimulation}
-                        disabled={isSimulating || visitorCount < 1}
-                        className="inline-flex items-center justify-center font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark disabled:opacity-50"
-                      >
-                        Simulate {visitorCount} visitors
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={stopSimulation}
-                        disabled={!isSimulating}
-                        className="inline-flex items-center justify-center font-medium text-dark bg-gray-1 py-3 px-7 rounded-md ease-out duration-200 hover:bg-gray-200 disabled:opacity-50"
-                      >
-                        Stop simulation
-                      </button>
-                    </div>
-
-                    {simulationError && (
-                      <p className="text-sm text-red mt-2">{simulationError}</p>
-                    )}
-                  </div>
 
                 </div>
               </div>
