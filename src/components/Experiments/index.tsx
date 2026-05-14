@@ -1,11 +1,15 @@
 'use client'
 import React, { useEffect, useRef, useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
+import { useEnvironment } from "@/app/context/EnvironmentContext";
+import { getEnvironmentConfig } from "@/config/environments";
 
-const TRACK_ENDPOINT = 'https://app-behavora.alexweb.md/api/v1/track'
 const PAGE_URL = 'http://localhost:3000/blogs/blog-grid'
 
 const Experiments = () => {
+  const { currentEnvironment, setEnvironment } = useEnvironment();
+  const envConfig = getEnvironmentConfig(currentEnvironment);
+  const TRACK_ENDPOINT = `${envConfig.apiBaseUrl}/api/v1/track`;
 
   const [visitorId, setVisitorId] = useState<string | null>(null)
   const [trackRequests, setTrackRequests] = useState(0)
@@ -46,7 +50,10 @@ const Experiments = () => {
       payloads.map((payload) =>
         fetch(TRACK_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Site-Id': envConfig.siteId,
+           },
           body: JSON.stringify(payload),
         })
       )
@@ -136,6 +143,30 @@ const Experiments = () => {
 
               <div className="p-4 sm:p-7.5">
                 <div className="flex flex-col gap-4">
+
+                  <div className="flex items-center justify-between gap-3 pb-3 border-b border-gray-3">
+                    <span className="text-sm font-medium text-dark">Environment:</span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEnvironment('dev')}
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${currentEnvironment === 'dev'
+                            ? 'bg-blue text-white'
+                            : 'bg-gray-1 text-dark hover:bg-gray-200'
+                          }`}
+                      >
+                        Dev
+                      </button>
+                      <button
+                        onClick={() => setEnvironment('prod')}
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${currentEnvironment === 'prod'
+                            ? 'bg-blue text-white'
+                            : 'bg-gray-1 text-dark hover:bg-gray-200'
+                          }`}
+                      >
+                        Prod
+                      </button>
+                    </div>
+                  </div>
 
                   <p className="flex items-center gap-4">
                     <small>visitor_id: </small>
