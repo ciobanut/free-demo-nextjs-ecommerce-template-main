@@ -54,7 +54,7 @@ export default function RootLayout({
             <Footer />
           </>
         )}
-        <script src="https://cdn-behavora.alexweb.md/widget/loader.js" data-site-id="site_XsWxm9OtWH" data-api-url="https://app-behavora.alexweb.md"></script>
+        <script src="https://cdn.behavora.com/widget/loader.js" data-site-id="site_F03GcUYrwj" data-api-url="https://app.behavora.com"></script>
       </body>
     </html>
   );
