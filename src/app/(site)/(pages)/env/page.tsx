@@ -1,4 +1,4 @@
-import Experiments from "@/components/Experiments";
+import Environment from "@/components/Environment";
 import React from "react";
 
 import { Metadata } from "next";
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-const ExperimentsPage = () => {
+const EnvironmentPage = () => {
   return (
     <main>
-      <Experiments />
+      <Environment />
     </main>
   );
 };
 
-export default ExperimentsPage;
+export default EnvironmentPage;

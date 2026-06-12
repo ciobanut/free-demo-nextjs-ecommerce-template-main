@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
+// @ts-ignore
 import "../css/euclid-circular-a-font.css";
+// @ts-ignore
 import "../css/style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -12,16 +14,32 @@ import QuickViewModal from "@/components/Common/QuickViewModal";
 import CartSidebarModal from "@/components/Common/CartSidebarModal";
 import { PreviewSliderProvider } from "../context/PreviewSliderContext";
 import PreviewSliderModal from "@/components/Common/PreviewSlider";
+import { EnvironmentProvider, useEnvironment } from "../context/EnvironmentContext";
 
+import Script from "next/script";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import DebugPanel from "@/debug/components/DebugPanel";
+import { getEnvironmentConfig } from "@/config/environments";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const BehavoraScript = () => {
+  const { currentEnvironment } = useEnvironment();
+  const envConfig = getEnvironmentConfig(currentEnvironment);
+
+  return (
+    <Script
+      src={envConfig.scriptSrc}
+      data-site-id={envConfig.siteId}
+      data-api-url={envConfig.apiBaseUrl}
+      data-ws-key={envConfig.wsKey}
+      data-ws-host={envConfig.wsHost}
+      data-ws-port={envConfig.wsPort}
+      strategy="afterInteractive"
+    />
+  );
+};
+
+const LayoutContent = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -29,38 +47,46 @@ export default function RootLayout({
   }, []);
 
   return (
+    <>
+      {loading ? (
+        <PreLoader />
+      ) : (
+        <>
+          <ReduxProvider>
+            <CartModalProvider>
+              <ModalProvider>
+                <PreviewSliderProvider>
+                  <Header />
+                  {children}
+
+                  <QuickViewModal />
+                  <CartSidebarModal />
+                  <PreviewSliderModal />
+                  <DebugPanel />
+                </PreviewSliderProvider>
+              </ModalProvider>
+            </CartModalProvider>
+          </ReduxProvider>
+          <ScrollToTop />
+          <Footer />
+        </>
+      )}
+      <BehavoraScript />
+    </>
+  );
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
     <html lang="en" suppressHydrationWarning={true}>
       <body>
-        {loading ? (
-          <PreLoader />
-        ) : (
-          <>
-            <ReduxProvider>
-              <CartModalProvider>
-                <ModalProvider>
-                  <PreviewSliderProvider>
-                    <Header />
-                    {children}
-
-                    <QuickViewModal />
-                    <CartSidebarModal />
-                    <PreviewSliderModal />
-                    <DebugPanel />
-                  </PreviewSliderProvider>
-                </ModalProvider>
-              </CartModalProvider>
-            </ReduxProvider>
-            <ScrollToTop />
-            <Footer />
-          </>
-        )}
-
-        <script src="http://localhost:5173/dist/journey-predictor-widget.umd.js" data-site-id="site_O2TVKawgo8" data-api-url="http://localhost:8082"
-        data-ws-key='appkey'
-        data-ws-host='localhost'
-        data-ws-port='8080'
-        ></script>
-        
+        <EnvironmentProvider>
+          <LayoutContent>{children}</LayoutContent>
+        </EnvironmentProvider>
       </body>
     </html>
   );
