@@ -145,7 +145,7 @@ const BlogDetailsWithSidebar = () => {
 
                 <div className="flex flex-wrap items-center justify-between gap-10 mt-10">
                   <div className="flex flex-wrap items-center gap-5">
-                    <p>Popular Tags :
+                    <p>Popular Tags :</p>
 
                     <ul className="flex flex-wrap items-center gap-3.5">
                       <li>
