@@ -61,14 +61,14 @@ const Header = () => {
           {/* <!-- header top left --> */}
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
-              <div className="flex gap-2 align-middle">
+              <div className="flex gap-2 items-center">
                 <Image
                   src="/images/logo/logo.svg"
                   alt="Logo"
                   width={52}
                   height={36}
                 />
-                <h1 className="font-semibold text-dark text-xl sm:text-2xl xl:text-custom-2">Demo</h1>
+                <h1 className="font-semibold text-dark sm:text-2xl xl:text-custom-2">Demo</h1>
               </div>
             </Link>
 

@@ -125,10 +125,4 @@ export const menuData: Menu[] = [
     newTab: false,
     path: "/contact",
   },
-  {
-    id: 2,
-    title: "Environment",
-    newTab: false,
-    path: "/env",
-  },
 ];
