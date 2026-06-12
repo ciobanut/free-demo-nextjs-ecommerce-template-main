@@ -257,7 +257,7 @@ const Environment = () => {
                     )}
                   </div>
                 </form>
-              ) : isLocalhost ? (
+              ) : (
                 <div>
                   <h3 className="text-lg font-semibold text-dark mb-4">
                     {currentEnvironment === 'dev' ? 'dev.behavora.com' : 'app.behavora.com'}
@@ -283,7 +283,7 @@ const Environment = () => {
                     </p>
                   </div>
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
         </div>
