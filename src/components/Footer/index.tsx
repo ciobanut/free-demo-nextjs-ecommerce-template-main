@@ -385,7 +385,7 @@ const Footer = () => {
                   <Image
                     src="/images/payment/payment-04.svg"
                     alt="apple pay"
-                    width={52.94}
+                    width={53}
                     height={22}
                   />
                 </a>

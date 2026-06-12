@@ -257,7 +257,7 @@ const Environment = () => {
                     )}
                   </div>
                 </form>
-              ) : isLocalhost ? (
+              ) : (
                 <div>
                   <h3 className="text-lg font-semibold text-dark mb-4">
                     {currentEnvironment === 'dev' ? 'dev.behavora.com' : 'app.behavora.com'}
@@ -265,7 +265,7 @@ const Environment = () => {
                   <p className="text-body mb-3">
                     This demo site is connected to{' '}
                     <a
-                      href={`${envConfig.apiBaseUrl}?utm_source=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
+                      href={`${envConfig.apiBaseUrl}/login?email=demo@demo.com&password=demodemo&utm_source=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue underline hover:text-blue-dark"
@@ -283,7 +283,7 @@ const Environment = () => {
                     </p>
                   </div>
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
         </div>

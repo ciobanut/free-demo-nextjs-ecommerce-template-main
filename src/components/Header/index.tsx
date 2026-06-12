@@ -67,6 +67,7 @@ const Header = () => {
                   alt="Logo"
                   width={52}
                   height={36}
+                  className="w-auto max-h-6"
                 />
                 <h1 className="font-semibold text-dark sm:text-2xl xl:text-custom-2">Demo</h1>
               </div>
