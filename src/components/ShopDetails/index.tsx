@@ -945,7 +945,7 @@ const ShopDetails = () => {
                       {/* <!-- review item --> */}
                       <div className="rounded-xl bg-white shadow-1 p-4 sm:p-6">
                         <div className="flex items-center justify-between">
-                          <a href="#" className="flex items-center gap-4">
+                          <a href="/my-account" className="flex items-center gap-4">
                             <div className="w-12.5 h-12.5 rounded-full overflow-hidden">
                               <Image
                                 src="/images/users/user-01.jpg"
@@ -1059,7 +1059,7 @@ const ShopDetails = () => {
                       {/* <!-- review item --> */}
                       <div className="rounded-xl bg-white shadow-1 p-4 sm:p-6">
                         <div className="flex items-center justify-between">
-                          <a href="#" className="flex items-center gap-4">
+                          <a href="/my-account" className="flex items-center gap-4">
                             <div className="w-12.5 h-12.5 rounded-full overflow-hidden">
                               <Image
                                 src="/images/users/user-01.jpg"
@@ -1173,7 +1173,7 @@ const ShopDetails = () => {
                       {/* <!-- review item --> */}
                       <div className="rounded-xl bg-white shadow-1 p-4 sm:p-6">
                         <div className="flex items-center justify-between">
-                          <a href="#" className="flex items-center gap-4">
+                          <a href="/my-account" className="flex items-center gap-4">
                             <div className="w-12.5 h-12.5 rounded-full overflow-hidden">
                               <Image
                                 src="/images/users/user-01.jpg"

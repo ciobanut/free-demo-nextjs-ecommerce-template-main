@@ -1,30 +1,65 @@
-# Free eCommerce Template for Next.js - NextMerce
+# Behavora Demo Site
 
-The free Next.js eCommerce template is a lite version of the NextMerce Next.js eCommerce boilerplate, designed to streamline the launch and management of your online store.
+Demo site for testing [Behavora](https://behavora.com) — a customer journey tracking and prediction widget.
 
-![NextMerce](https://github.com/user-attachments/assets/57155689-a756-4222-8af7-134e556acae2)
+Built on the NextMerce Next.js e-commerce template.
 
+## Configuration
 
-While NextMerce Pro features advanced functionalities, seamless integration, and customizable options, providing all the essential tools needed to build and expand your business, the lite version offers a basic Next.js template specifically crafted for eCommerce websites. Both versions ensure superior performance and flexibility, all powered by Next.js.
+Environment variables for the Behavora widget are in `src/config/environments.ts`:
 
-### NextMerce Free VS NextMerce Pro
+```ts
+export const ENVIRONMENTS = {
+  dev: {
+    apiBaseUrl: 'https://dev.behavora.com',
+    scriptSrc: 'https://dev-cdn.behavora.com/widget/loader.js',
+    siteId: 'site_XsWxm9OtWH',
+  },
+  prod: {
+    apiBaseUrl: 'https://app.behavora.com',
+    scriptSrc: 'https://cdn.behavora.com/widget/loader.js',
+    siteId: 'site_K4J8jmqoyK',
+  },
+  local: {
+    apiBaseUrl: 'http://localhost:8082',
+    scriptSrc: 'http://localhost:5173/dist/journey-predictor-widget.umd.js',
+    siteId: 'site_O2TVKawgo8',
+    wsKey: 'appkey',
+    wsHost: 'localhost',
+    wsPort: '8080',
+  },
+};
+```
 
-| ✨ Features                         | 🎁 NextMerce Free                 | 🔥 NextMerce Pro                        |
-|----------------------------------|--------------------------------|--------------------------------------|
-| Next.js Pages                    | Static                         | Dynamic Boilerplate Template         |
-| Components                       | Limited                        | All According to Demo                |
-| eCommerce Functionality          | Included                       | Included                             |
-| Integrations (DB, Auth, etc.)    | Not Included                   | Included                             |
-| Community Support                | Included                       | Included                             |
-| Premium Email Support            | Not Included                   | Included                             |
-| Lifetime Free Updates            | Included                       | Included                             |
+### Updating config
 
+- **Site ID** or **API URL** changed? Update the values in the appropriate environment block above.
+- The widget script tag (`<Script>`) is rendered in `src/app/(site)/layout.tsx` using the active environment's config.
+- To add a new environment, add an entry to `ENVIRONMENTS` and update the `Environment` type.
 
-#### [🚀 Live Demo](https://demo.nextmerce.com/)
+### Switching environments
 
-#### [🌐 Visit Website](https://nextmerce.com/)
+Visit `/env` in the browser to switch between Dev, Prod, and Local environments. The page reloads with the selected environment's widget script.
 
-## Update Logs
+- **Local** is only visible when running on `localhost`.
+- The Local environment has a form to override site ID, API URL, script URL, and WebSocket settings. Changes are saved to `localStorage` and persist across reloads.
 
-Version 0.1.2 - [Mar 16, 2026]
-- Update Next.js, React, and React DOM dependencies, add baseline-browser-mapping
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+The site runs on `http://localhost:3000`.
+
+### Connecting to a local backend
+
+1. Set the environment to **Local** at `/env`.
+2. Fill in your local API URL and site ID in the form.
+3. Save — the page reloads with your local config.
+
+The default local config expects:
+- A backend API at `http://localhost:8082`
+- The widget client at `http://localhost:5173` (Vite dev server for [journey-predictor-client](https://github.com/zordecmax/journey-predictor-client))
+- A WebSocket server at `ws://localhost:8080` (for real-time prediction updates)

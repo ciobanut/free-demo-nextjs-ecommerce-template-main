@@ -263,7 +263,7 @@ const MyAccount = () => {
               <p className="text-dark">
                 Hello Annie (not Annie?
                 <a
-                  href="#"
+                  href="/signin"
                   className="text-red ease-out duration-200 hover:underline"
                 >
                   Log Out

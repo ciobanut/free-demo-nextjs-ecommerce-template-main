@@ -82,7 +82,7 @@ const BlogDetails = () => {
               </p>
 
               <a
-                href="#"
+                href="/my-account"
                 className="flex items-center justify-center gap-3 mt-5.5"
               >
                 <div className="flex w-12 h-12 rounded-full overflow-hidden">
@@ -131,42 +131,43 @@ const BlogDetails = () => {
 
             <div className="flex flex-wrap items-center justify-between gap-10 mt-10">
               <div className="flex flex-wrap items-center gap-5">
-                <p>Popular Tags :</p>
+                Popular Tags :
+                  <ul className="flex flex-wrap items-center gap-3.5">
+                    <li>
+                      <a
+                        className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
+                        href="/shop-with-sidebar"
+                      >
+                        Desktop
+                      </a>
+                    </li>
 
-                <ul className="flex flex-wrap items-center gap-3.5">
-                  <li>
-                    <a
-                      className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
-                    >
-                      Desktop
-                    </a>
-                  </li>
+                    <li>
+                      <a
+                        className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
+                        href="/shop-with-sidebar"
+                      >
+                        Macbook
+                      </a>
+                    </li>
 
-                  <li>
-                    <a
-                      className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
-                    >
-                      Macbook
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
-                    >
-                      PC
-                    </a>
-                  </li>
-                </ul>
+                    <li>
+                      <a
+                        className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
+                        href="/shop-with-sidebar"
+                      >
+                        PC
+                      </a>
+                    </li>
+                  </ul>
               </div>
 
               {/* <!-- Social Links start --> */}
               <div className="flex items-center gap-3">
                 <a
-                  href="#"
+                  href="https://pinterest.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#BD081C] ease-in duration-200 hover:bg-opacity-95"
                 >
                   <svg
@@ -191,7 +192,9 @@ const BlogDetails = () => {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#0376A8] ease-in duration-200 hover:bg-opacity-95"
                 >
                   <svg
@@ -209,7 +212,9 @@ const BlogDetails = () => {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#00ACEE] ease-in duration-200 hover:bg-opacity-95"
                 >
                   <svg
@@ -227,7 +232,9 @@ const BlogDetails = () => {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#1877F2] ease-in duration-200 hover:bg-opacity-95"
                 >
                   <svg

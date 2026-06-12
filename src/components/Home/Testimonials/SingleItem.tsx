@@ -40,7 +40,7 @@ const SingleItem = ({ testimonial }: { testimonial: Testimonial }) => {
 
       <p className="text-dark mb-6">{testimonial.review}</p>
 
-      <a href="#" className="flex items-center gap-4">
+      <a href="/my-account" className="flex items-center gap-4">
         <div className="w-12.5 h-12.5 rounded-full overflow-hidden">
           <Image
             src={testimonial.authorImg}
