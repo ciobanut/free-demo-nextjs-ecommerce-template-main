@@ -20,9 +20,9 @@ The `.env` file is gitignored and never committed. Available variables are docum
 
 | Variable | Description |
 |---|---|
-| `DEMO_BEHAVORA_DEV_*` | Dev environment (API, script, site ID, WS) |
-| `DEMO_BEHAVORA_PROD_*` | Production environment (API, script, site ID) |
-| `DEMO_BEHAVORA_LOCAL_*` | Local development overrides |
+| `NEXT_PUBLIC_DEMO_BEHAVORA_DEV_*` | Dev environment (API, script, site ID, WS) |
+| `NEXT_PUBLIC_DEMO_BEHAVORA_PROD_*` | Production environment (API, script, site ID) |
+| `NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_*` | Local development overrides |
 
 The values are read in `src/config/environments.ts` via `process.env.DEMO_*`, with hardcoded fallbacks so the app works even without a `.env` file. Next.js replaces these at build time.
 
@@ -35,7 +35,7 @@ Visit `/env` in the browser to switch between Dev, Prod, and Local environments.
 
 ### Adding a new environment
 
-Add an entry to `ENVIRONMENTS` in `src/config/environments.ts` and update the `Environment` type. Then add the corresponding `DEMO_BEHAVORA_*` variables to `.env` and `.env.example`.
+Add an entry to `ENVIRONMENTS` in `src/config/environments.ts` and update the `Environment` type. Then add the corresponding `NEXT_PUBLIC_DEMO_BEHAVORA_*` variables to `.env` and `.env.example`.
 
 ## Local development
 

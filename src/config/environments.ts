@@ -11,25 +11,25 @@ export interface EnvironmentConfig {
 
 export const ENVIRONMENTS: Record<Environment, EnvironmentConfig> = {
     dev: {
-        apiBaseUrl: process.env.DEMO_BEHAVORA_DEV_API_BASE_URL || 'https://dev.behavora.com',
-        scriptSrc: process.env.DEMO_BEHAVORA_DEV_SCRIPT_SRC || 'https://dev-cdn.behavora.com/widget/loader.js',
-        siteId: process.env.DEMO_BEHAVORA_DEV_SITE_ID,
-        wsKey: process.env.DEMO_BEHAVORA_DEV_WS_KEY,
-        wsHost: process.env.DEMO_BEHAVORA_DEV_WS_HOST || 'dev.behavora.com',
-        wsPort: process.env.DEMO_BEHAVORA_DEV_WS_PORT || '443',
+        apiBaseUrl: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_DEV_API_BASE_URL || 'https://dev.behavora.com',
+        scriptSrc: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_DEV_SCRIPT_SRC || 'https://dev-cdn.behavora.com/widget/loader.js',
+        siteId: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_DEV_SITE_ID,
+        wsKey: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_DEV_WS_KEY,
+        wsHost: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_DEV_WS_HOST || 'dev.behavora.com',
+        wsPort: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_DEV_WS_PORT || '443',
     },
     prod: {
-        apiBaseUrl: process.env.DEMO_BEHAVORA_PROD_API_BASE_URL || 'https://app.behavora.com',
-        scriptSrc: process.env.DEMO_BEHAVORA_PROD_SCRIPT_SRC || 'https://cdn.behavora.com/widget/loader.js',
-        siteId: process.env.DEMO_BEHAVORA_PROD_SITE_ID,
+        apiBaseUrl: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_PROD_API_BASE_URL || 'https://app.behavora.com',
+        scriptSrc: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_PROD_SCRIPT_SRC || 'https://cdn.behavora.com/widget/loader.js',
+        siteId: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_PROD_SITE_ID,
     },
     local: {
-        apiBaseUrl: process.env.DEMO_BEHAVORA_LOCAL_API_BASE_URL || 'http://localhost:8082',
-        scriptSrc: process.env.DEMO_BEHAVORA_LOCAL_SCRIPT_SRC || 'http://localhost:5173/dist/journey-predictor-widget.umd.js',
-        siteId: process.env.DEMO_BEHAVORA_LOCAL_SITE_ID,
-        wsKey: process.env.DEMO_BEHAVORA_LOCAL_WS_KEY,
-        wsHost: process.env.DEMO_BEHAVORA_LOCAL_WS_HOST || 'localhost',
-        wsPort: process.env.DEMO_BEHAVORA_LOCAL_WS_PORT || '8080',
+        apiBaseUrl: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_API_BASE_URL || 'http://localhost:8082',
+        scriptSrc: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_SCRIPT_SRC || 'http://localhost:5173/dist/journey-predictor-widget.umd.js',
+        siteId: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_SITE_ID,
+        wsKey: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_WS_KEY,
+        wsHost: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_WS_HOST || 'localhost',
+        wsPort: process.env.NEXT_PUBLIC_DEMO_BEHAVORA_LOCAL_WS_PORT || '8080',
     },
 };
 
