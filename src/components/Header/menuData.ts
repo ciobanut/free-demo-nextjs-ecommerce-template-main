@@ -14,12 +14,6 @@ export const menuData: Menu[] = [
     path: "/shop-with-sidebar",
   },
   {
-    id: 3,
-    title: "Contact",
-    newTab: false,
-    path: "/contact",
-  },
-  {
     id: 6,
     title: "pages",
     newTab: false,
@@ -124,6 +118,12 @@ export const menuData: Menu[] = [
         path: "/blogs/blog-details",
       },
     ],
+  },
+  {
+    id: 3,
+    title: "Contact",
+    newTab: false,
+    path: "/contact",
   },
   {
     id: 2,

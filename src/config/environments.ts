@@ -11,22 +11,25 @@ export interface EnvironmentConfig {
 
 export const ENVIRONMENTS: Record<Environment, EnvironmentConfig> = {
     dev: {
-        apiBaseUrl: 'https://dev.behavora.com',
-        scriptSrc: 'https://dev-cdn.behavora.com/widget/loader.js',
-        siteId: 'site_XsWxm9OtWH',
+        apiBaseUrl: process.env.DEMO_BEHAVORA_DEV_API_BASE_URL || 'https://dev.behavora.com',
+        scriptSrc: process.env.DEMO_BEHAVORA_DEV_SCRIPT_SRC || 'https://dev-cdn.behavora.com/widget/loader.js',
+        siteId: process.env.DEMO_BEHAVORA_DEV_SITE_ID,
+        wsKey: process.env.DEMO_BEHAVORA_DEV_WS_KEY,
+        wsHost: process.env.DEMO_BEHAVORA_DEV_WS_HOST || 'dev.behavora.com',
+        wsPort: process.env.DEMO_BEHAVORA_DEV_WS_PORT || '443',
     },
     prod: {
-        apiBaseUrl: 'https://app.behavora.com',
-        scriptSrc: 'https://cdn.behavora.com/widget/loader.js',
-        siteId: 'site_K4J8jmqoyK',
+        apiBaseUrl: process.env.DEMO_BEHAVORA_PROD_API_BASE_URL || 'https://app.behavora.com',
+        scriptSrc: process.env.DEMO_BEHAVORA_PROD_SCRIPT_SRC || 'https://cdn.behavora.com/widget/loader.js',
+        siteId: process.env.DEMO_BEHAVORA_PROD_SITE_ID,
     },
     local: {
-        apiBaseUrl: 'http://localhost:8082',
-        scriptSrc: 'http://localhost:5173/dist/journey-predictor-widget.umd.js',
-        siteId: 'site_O2TVKawgo8',
-        wsKey: 'appkey',
-        wsHost: 'localhost',
-        wsPort: '8080',
+        apiBaseUrl: process.env.DEMO_BEHAVORA_LOCAL_API_BASE_URL || 'http://localhost:8082',
+        scriptSrc: process.env.DEMO_BEHAVORA_LOCAL_SCRIPT_SRC || 'http://localhost:5173/dist/journey-predictor-widget.umd.js',
+        siteId: process.env.DEMO_BEHAVORA_LOCAL_SITE_ID,
+        wsKey: process.env.DEMO_BEHAVORA_LOCAL_WS_KEY,
+        wsHost: process.env.DEMO_BEHAVORA_LOCAL_WS_HOST || 'localhost',
+        wsPort: process.env.DEMO_BEHAVORA_LOCAL_WS_PORT || '8080',
     },
 };
 
@@ -44,6 +47,6 @@ export const getEnvironmentConfig = (env: Environment): EnvironmentConfig => {
             const overrides = JSON.parse(saved) as Partial<EnvironmentConfig>;
             return { ...base, ...overrides };
         }
-    } catch {}
+    } catch { }
     return base;
 };
