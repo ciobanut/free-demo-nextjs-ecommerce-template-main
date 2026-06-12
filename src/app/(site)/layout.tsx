@@ -54,7 +54,13 @@ export default function RootLayout({
             <Footer />
           </>
         )}
-        <script src="https://cdn.behavora.com/widget/loader.js" data-site-id="site_K4J8jmqoyK" data-api-url="https://app.behavora.com"></script>
+
+        <script src="http://localhost:5173/dist/journey-predictor-widget.umd.js" data-site-id="site_O2TVKawgo8" data-api-url="http://localhost:8082"
+        data-ws-key='appkey'
+        data-ws-host='localhost'
+        data-ws-port='8080'
+        ></script>
+        
       </body>
     </html>
   );
