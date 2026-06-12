@@ -19,7 +19,6 @@ import { EnvironmentProvider, useEnvironment } from "../context/EnvironmentConte
 import Script from "next/script";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
-import DebugPanel from "@/debug/components/DebugPanel";
 import { getEnvironmentConfig } from "@/config/environments";
 
 const BehavoraScript = () => {
@@ -62,7 +61,6 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
                   <QuickViewModal />
                   <CartSidebarModal />
                   <PreviewSliderModal />
-                  <DebugPanel />
                 </PreviewSliderProvider>
               </ModalProvider>
             </CartModalProvider>

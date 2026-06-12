@@ -6,36 +6,25 @@ Built on the NextMerce Next.js e-commerce template.
 
 ## Configuration
 
-Environment variables for the Behavora widget are in `src/config/environments.ts`:
+Behavora environment settings (API URLs, site IDs, WebSocket keys) are configured via environment variables.
 
-```ts
-export const ENVIRONMENTS = {
-  dev: {
-    apiBaseUrl: 'https://dev.behavora.com',
-    scriptSrc: 'https://dev-cdn.behavora.com/widget/loader.js',
-    siteId: 'site_XsWxm9OtWH',
-  },
-  prod: {
-    apiBaseUrl: 'https://app.behavora.com',
-    scriptSrc: 'https://cdn.behavora.com/widget/loader.js',
-    siteId: 'site_K4J8jmqoyK',
-  },
-  local: {
-    apiBaseUrl: 'http://localhost:8082',
-    scriptSrc: 'http://localhost:5173/dist/journey-predictor-widget.umd.js',
-    siteId: 'site_O2TVKawgo8',
-    wsKey: 'appkey',
-    wsHost: 'localhost',
-    wsPort: '8080',
-  },
-};
+### Setup
+
+Copy the example file and fill in the values:
+
+```bash
+cp .env.example .env
 ```
 
-### Updating config
+The `.env` file is gitignored and never committed. Available variables are documented in [`.env.example`](.env.example).
 
-- **Site ID** or **API URL** changed? Update the values in the appropriate environment block above.
-- The widget script tag (`<Script>`) is rendered in `src/app/(site)/layout.tsx` using the active environment's config.
-- To add a new environment, add an entry to `ENVIRONMENTS` and update the `Environment` type.
+| Variable | Description |
+|---|---|
+| `DEMO_BEHAVORA_DEV_*` | Dev environment (API, script, site ID, WS) |
+| `DEMO_BEHAVORA_PROD_*` | Production environment (API, script, site ID) |
+| `DEMO_BEHAVORA_LOCAL_*` | Local development overrides |
+
+The values are read in `src/config/environments.ts` via `process.env.DEMO_*`, with hardcoded fallbacks so the app works even without a `.env` file. Next.js replaces these at build time.
 
 ### Switching environments
 
@@ -43,6 +32,10 @@ Visit `/env` in the browser to switch between Dev, Prod, and Local environments.
 
 - **Local** is only visible when running on `localhost`.
 - The Local environment has a form to override site ID, API URL, script URL, and WebSocket settings. Changes are saved to `localStorage` and persist across reloads.
+
+### Adding a new environment
+
+Add an entry to `ENVIRONMENTS` in `src/config/environments.ts` and update the `Environment` type. Then add the corresponding `DEMO_BEHAVORA_*` variables to `.env` and `.env.example`.
 
 ## Local development
 
