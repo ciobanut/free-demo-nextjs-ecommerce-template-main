@@ -145,13 +145,13 @@ const BlogDetailsWithSidebar = () => {
 
                 <div className="flex flex-wrap items-center justify-between gap-10 mt-10">
                   <div className="flex flex-wrap items-center gap-5">
-                    <p>Popular Tags :</p>
+                    <p>Popular Tags :
 
                     <ul className="flex flex-wrap items-center gap-3.5">
                       <li>
                         <a
                           className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                          href="#"
+                          href="/shop-with-sidebar"
                         >
                           Desktop
                         </a>
@@ -160,7 +160,7 @@ const BlogDetailsWithSidebar = () => {
                       <li>
                         <a
                           className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                          href="#"
+                          href="/shop-with-sidebar"
                         >
                           Macbook
                         </a>
@@ -169,7 +169,7 @@ const BlogDetailsWithSidebar = () => {
                       <li>
                         <a
                           className="inline-flex hover:text-white border border-gray-3 bg-white py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                          href="#"
+                          href="/shop-with-sidebar"
                         >
                           PC
                         </a>
@@ -180,7 +180,9 @@ const BlogDetailsWithSidebar = () => {
                   {/* <!-- Social Links start --> */}
                   <div className="flex items-center gap-3">
                     <a
-                      href="#"
+                      href="https://pinterest.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#BD081C] ease-in duration-200 hover:bg-opacity-95"
                     >
                       <svg
@@ -205,7 +207,9 @@ const BlogDetailsWithSidebar = () => {
                     </a>
 
                     <a
-                      href="#"
+                      href="https://linkedin.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#0376A8] ease-in duration-200 hover:bg-opacity-95"
                     >
                       <svg
@@ -223,7 +227,9 @@ const BlogDetailsWithSidebar = () => {
                     </a>
 
                     <a
-                      href="#"
+                      href="https://twitter.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#00ACEE] ease-in duration-200 hover:bg-opacity-95"
                     >
                       <svg
@@ -241,7 +247,9 @@ const BlogDetailsWithSidebar = () => {
                     </a>
 
                     <a
-                      href="#"
+                      href="https://facebook.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center justify-center w-[35px] h-[35px] rounded-full bg-[#1877F2] ease-in duration-200 hover:bg-opacity-95"
                     >
                       <svg
@@ -353,56 +361,56 @@ const BlogDetailsWithSidebar = () => {
                   <div className="flex flex-wrap gap-3.5">
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       Desktop
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       Macbook
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       PC
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       Watch
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       USB Cable
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       Mouse
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       Windows PC
                     </a>
 
                     <a
                       className="inline-flex hover:text-white border border-gray-3 py-2 px-4 rounded-md ease-out duration-200 hover:bg-blue hover:border-blue"
-                      href="#"
+                      href="/shop-with-sidebar"
                     >
                       Monitor
                     </a>

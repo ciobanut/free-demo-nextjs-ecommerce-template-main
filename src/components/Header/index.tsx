@@ -330,7 +330,7 @@ const Header = () => {
               <ul className="flex items-center gap-5.5">
                 <li className="py-4">
                   <a
-                    href="#"
+                    href="/recently-viewed"
                     className="flex items-center gap-1.5 font-medium text-custom-sm text-dark hover:text-blue"
                   >
                     <svg

@@ -55,7 +55,7 @@ const Signin = () => {
                 </button>
 
                 <a
-                  href="#"
+                  href="/forgot-password"
                   className="block text-center text-dark-4 mt-4.5 ease-out duration-200 hover:text-dark"
                 >
                   Forget your password?
