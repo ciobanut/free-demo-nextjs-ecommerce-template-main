@@ -183,8 +183,8 @@ const Environment = () => {
 
                     <div className="w-full">
                       <label htmlFor="scriptSrc" className="block mb-2.5">
-                        Script URL <small>(<a href="https://github.com/zordecmax/journey-predictor-client" target="_blank"
-                          className="text-blue underline hover:text-blue-dark">journey-predictor-client</a> running locally)</small>
+                        Widget script URL <small>(<a href="https://github.com/zordecmax/journey-predictor-client" target="_blank"
+                          className="text-blue underline hover:text-blue-dark">journey-predictor-client</a> running locally, make sure to build it first with <code>npm run build:widget</code> and run it with <code>npm run dev</code>, and that port is correct.)</small>
                       </label>
                       <input
                         type="text"

@@ -46,11 +46,24 @@ npm run dev
 
 The site runs on `http://localhost:3000`.
 
+> For local development, we need two additional projects running locally:
+>
+> - `https://github.com/zordecmax/journey-predictor-api` — backend API and WebSocket server
+> - `https://github.com/zordecmax/journey-predictor-client` — widget client
+>
+> Both projects must be running and addressed on the correct ports.
+
 ### Connecting to a local backend
 
-1. Set the environment to **Local** at `/env`.
+1. Set the environment to **Local** at `/env` page.
 2. Fill in your local API URL and site ID in the form.
-3. Save — the page reloads with your local config.
+3. Fill Widget script URL (journey-predictor-client running locally, make sure to build it first with `npm run build:widget` and run it with `npm run dev`, and that port is correct).
+4. Fill WebSocket WS Key = REVERB_APP_KEY from .env
+5. Fill WebSocket WS Host with 'localhost' and not REVERB_HOST from .env
+6. Fill WebSocket WS Port = REVERB_PORT from .env
+7. Save.
+8. Reload the page.
+9. Check the console for any errors related to loading the widget script or connecting to the API/WebSocket.
 
 The default local config expects:
 - A backend API at `http://localhost:8082`
