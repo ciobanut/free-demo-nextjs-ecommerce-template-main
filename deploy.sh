@@ -14,6 +14,6 @@ rsync -avz --delete \
   "$LOCAL_PATH" "$SERVER:$REMOTE_PATH"
 
 echo "Сборка и перезапуск..."
-ssh "$SERVER" "cd $REMOTE_PATH && rm -rf .next && npm run build && pm2 restart demo-behavora"
+ssh "$SERVER" "cd $REMOTE_PATH && rm -rf .next && npm run build && (pm2 restart demo-behavora || pm2 start npm --name demo-behavora -- start) && pm2 save"
 
 echo "Деплой завершён!"
