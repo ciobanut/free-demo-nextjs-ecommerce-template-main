@@ -1,10 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../redux/store';
 
 const OverviewTab: React.FC = () => {
     const { pageMetrics, visitorId } = useAppSelector((state) => state.debugReducer);
+    const [siteId, setSiteId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const script = document.querySelector<HTMLScriptElement>('script[data-site-id]');
+        setSiteId(script?.dataset.siteId ?? null);
+    }, []);
 
     const formatTime = (ms: number) => {
         const seconds = Math.floor(ms / 1000);
@@ -27,6 +33,7 @@ const OverviewTab: React.FC = () => {
         { label: 'Time on Page', value: formatTime(pageMetrics.timeOnPageMs) },
         { label: 'Referrer', value: pageMetrics.referrer || 'Direct' },
         { label: 'Visitor ID', value: visitorId || 'Not set' },
+        { label: 'Site ID', value: siteId || 'Not set' },
     ];
 
     return (

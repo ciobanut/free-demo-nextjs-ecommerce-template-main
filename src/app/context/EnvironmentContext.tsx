@@ -14,8 +14,18 @@ export const EnvironmentProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [currentEnvironment, setCurrentEnvironmentState] = useState<Environment>(DEFAULT_ENVIRONMENT);
     const [isMounted, setIsMounted] = useState(false);
 
-    // Load environment from localStorage on mount
+    // Load environment from query param (highest priority) or localStorage on mount
     useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const queryEnv = params.get('env') as Environment | null;
+
+        if (queryEnv && (queryEnv === 'dev' || queryEnv === 'prod' || queryEnv === 'local')) {
+            setCurrentEnvironmentState(queryEnv);
+            localStorage.setItem('behavora_env', queryEnv);
+            setIsMounted(true);
+            return;
+        }
+
         const savedEnv = localStorage.getItem('behavora_env') as Environment | null;
         if (savedEnv && (savedEnv === 'dev' || savedEnv === 'prod' || savedEnv === 'local')) {
             setCurrentEnvironmentState(savedEnv);

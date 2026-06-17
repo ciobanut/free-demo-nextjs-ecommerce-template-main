@@ -3,15 +3,19 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../redux/store";
 import { addTrackRequest, addPredictRequest, setVisitorId } from "../../redux/features/debug-slice";
+import { useEnvironment } from "../../app/context/EnvironmentContext";
+import { getEnvironmentConfig } from "../../config/environments";
 
 export const useNetworkLogger = () => {
     const dispatch = useAppDispatch();
+    const { currentEnvironment } = useEnvironment();
 
     useEffect(() => {
         // Set visitor ID from localStorage
         const visitorId = localStorage.getItem('jp_user_id');
         dispatch(setVisitorId(visitorId));
 
+        const { apiBaseUrl } = getEnvironmentConfig(currentEnvironment);
         const originalFetch = window.fetch;
 
         window.fetch = async (...args) => {
@@ -29,8 +33,8 @@ export const useNetworkLogger = () => {
             }
 
             // Check if this is a track or predict request
-            const isTrackRequest = url.includes('https://app-behavora.alexweb.md/api/v1/track');
-            const isPredictRequest = url.includes('https://app-behavora.alexweb.md/api/v1/predict/');
+            const isTrackRequest = url.includes(`${apiBaseUrl}/api/v1/track`);
+            const isPredictRequest = url.includes(`${apiBaseUrl}/api/v1/predict/`);
 
             if (isTrackRequest || isPredictRequest) {
                 const requestId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
