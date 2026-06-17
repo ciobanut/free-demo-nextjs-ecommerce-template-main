@@ -73,21 +73,6 @@ src/components/
 ### Deployment
 - `deploy.sh` — rsyncs to remote server, then runs `npm run build` and `pm2 restart demo-behavora` via SSH
 - Target: `maxim@178.104.39.221:/var/www/demo.behavora.com`
-
-## Деплой и сервер
-
-**Как задеплоить:** запустить `./deploy.sh` локально. Скрипт:
-1. Синхронизирует файлы на сервер через `rsync` (без `node_modules`, `.next`, `.env`)
-2. Удаляет `.next` на сервере (чтобы не было конфликтов прав)
-3. Собирает проект на сервере (`npm run build`)
-4. Перезапускает процесс через PM2 (`pm2 restart demo-behavora`); если процесс не существует — создаёт его
-
-**Сервер:** `178.104.39.221`, пользователь `maxim`, путь `/var/www/demo.behavora.com`
-
-**PM2:** процесс называется `demo-behavora`, запускает `npm start` (Next.js в продакшн-режиме). После первого запуска список сохраняется через `pm2 save`.
-
-**Переменные окружения:** файл `.env` на сервере не перезаписывается (исключён из rsync) — его нужно редактировать вручную на сервере при необходимости.
-
 ### Data
 - All product, blog, testimonial, and category data is hardcoded in component-level data files (e.g., `shopData.ts`, `blogData.ts`, `testimonialsData.ts`)
 - Product images served from `/public/images/products/`
