@@ -48,11 +48,12 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {loading ? (
-        <PreLoader />
-      ) : (
-        <>
-          <ReduxProvider>
+      <ReduxProvider>
+        <DebugPanel />
+        {loading ? (
+          <PreLoader />
+        ) : (
+          <>
             <CartModalProvider>
               <ModalProvider>
                 <PreviewSliderProvider>
@@ -65,12 +66,11 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
                 </PreviewSliderProvider>
               </ModalProvider>
             </CartModalProvider>
-            <DebugPanel />
-          </ReduxProvider>
-          <ScrollToTop />
-          <Footer />
-        </>
-      )}
+            <ScrollToTop />
+            <Footer />
+          </>
+        )}
+      </ReduxProvider>
       <BehavoraScript />
     </>
   );

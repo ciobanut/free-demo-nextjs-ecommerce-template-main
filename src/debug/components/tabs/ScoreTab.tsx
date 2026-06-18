@@ -1,7 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppSelector } from '../../../redux/store';
+import { useEnvironment } from '../../../app/context/EnvironmentContext';
+import { getEnvironmentConfig } from '../../../config/environments';
 
 const SIGNAL_MAP: Record<string, { label: string; unit: string | null; tip: string }> = {
     pages_viewed:           { label: 'Просмотрено страниц',   unit: 'стр.', tip: 'Просмотри ещё страниц магазина' },
@@ -30,6 +32,22 @@ interface PredictData {
 
 const ScoreTab: React.FC = () => {
     const { requests } = useAppSelector((state) => state.debugReducer);
+    const { currentEnvironment } = useEnvironment();
+    const envConfig = getEnvironmentConfig(currentEnvironment);
+
+    useEffect(() => {
+        const sessionId = localStorage.getItem('jp_session_id');
+        if (!sessionId || !envConfig.apiBaseUrl) return;
+
+        const poll = () => {
+            fetch(`${envConfig.apiBaseUrl}/api/v1/predict/${sessionId}`).catch(() => {});
+        };
+
+        poll();
+        const timer = setInterval(poll, 10000);
+        return () => clearInterval(timer);
+    }, [envConfig.apiBaseUrl]);
+
     const latest = requests.predict.length > 0
         ? requests.predict[requests.predict.length - 1]
         : null;
