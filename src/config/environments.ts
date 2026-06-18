@@ -35,7 +35,7 @@ export const ENVIRONMENTS: Record<Environment, EnvironmentConfig> = {
 
 export const LOCAL_CONFIG_KEY = 'behavora_local_config';
 
-export const DEFAULT_ENVIRONMENT: Environment = 'prod';
+export const DEFAULT_ENVIRONMENT: Environment = 'dev';
 
 export const getEnvironmentConfig = (env: Environment): EnvironmentConfig => {
     const base = ENVIRONMENTS[env];
