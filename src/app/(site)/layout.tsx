@@ -10,6 +10,7 @@ import Footer from "../../components/Footer";
 import { ModalProvider } from "../context/QuickViewModalContext";
 import { CartModalProvider } from "../context/CartSidebarModalContext";
 import { ReduxProvider } from "@/redux/provider";
+import DebugPanel from "@/debug/components/DebugPanel";
 import QuickViewModal from "@/components/Common/QuickViewModal";
 import CartSidebarModal from "@/components/Common/CartSidebarModal";
 import { PreviewSliderProvider } from "../context/PreviewSliderContext";
@@ -64,6 +65,7 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
                 </PreviewSliderProvider>
               </ModalProvider>
             </CartModalProvider>
+            <DebugPanel />
           </ReduxProvider>
           <ScrollToTop />
           <Footer />
