@@ -36,13 +36,12 @@ const ScoreTab: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const sessionId = localStorage.getItem('jp_session_id');
-        if (!sessionId) {
-            setError('jp_session_id не найден в localStorage');
-            return;
-        }
-
         const poll = async () => {
+            const sessionId = localStorage.getItem('jp_session_id');
+            if (!sessionId) {
+                setError('Ожидание сессии от виджета...');
+                return;
+            }
             try {
                 const res = await fetch(`${envConfig.apiBaseUrl}/api/v1/predict/${sessionId}`);
                 const json = await res.json();
@@ -52,13 +51,13 @@ const ScoreTab: React.FC = () => {
                 } else {
                     setError(json.message || 'Ошибка API');
                 }
-            } catch (e) {
+            } catch {
                 setError('Сеть недоступна');
             }
         };
 
         poll();
-        const timer = setInterval(poll, 10000);
+        const timer = setInterval(poll, 3000);
         return () => clearInterval(timer);
     }, [envConfig.apiBaseUrl]);
 
