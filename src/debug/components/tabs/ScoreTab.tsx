@@ -37,7 +37,7 @@ const ScoreTab: React.FC = () => {
 
     useEffect(() => {
         const poll = async () => {
-            const sessionId = localStorage.getItem('jp_session_id');
+            const sessionId = sessionStorage.getItem('jp_session_id');
             if (!sessionId) {
                 setError('Ожидание сессии от виджета...');
                 return;
