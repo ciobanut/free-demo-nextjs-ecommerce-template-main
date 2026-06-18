@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { useAppSelector } from '../../../redux/store';
+import React, { useEffect, useState } from 'react';
 import { useEnvironment } from '../../../app/context/EnvironmentContext';
 import { getEnvironmentConfig } from '../../../config/environments';
 
@@ -31,16 +30,31 @@ interface PredictData {
 }
 
 const ScoreTab: React.FC = () => {
-    const { requests } = useAppSelector((state) => state.debugReducer);
     const { currentEnvironment } = useEnvironment();
     const envConfig = getEnvironmentConfig(currentEnvironment);
+    const [data, setData] = useState<PredictData | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const sessionId = localStorage.getItem('jp_session_id');
-        if (!sessionId || !envConfig.apiBaseUrl) return;
+        if (!sessionId) {
+            setError('jp_session_id не найден в localStorage');
+            return;
+        }
 
-        const poll = () => {
-            fetch(`${envConfig.apiBaseUrl}/api/v1/predict/${sessionId}`).catch(() => {});
+        const poll = async () => {
+            try {
+                const res = await fetch(`${envConfig.apiBaseUrl}/api/v1/predict/${sessionId}`);
+                const json = await res.json();
+                if (json.success && json.data) {
+                    setData(json.data);
+                    setError(null);
+                } else {
+                    setError(json.message || 'Ошибка API');
+                }
+            } catch (e) {
+                setError('Сеть недоступна');
+            }
         };
 
         poll();
@@ -48,20 +62,19 @@ const ScoreTab: React.FC = () => {
         return () => clearInterval(timer);
     }, [envConfig.apiBaseUrl]);
 
-    const latest = requests.predict.length > 0
-        ? requests.predict[requests.predict.length - 1]
-        : null;
-
-    if (!latest?.responseBody) {
+    if (error) {
         return (
-            <div className="p-4 text-center text-gray-500 text-sm">
-                Ходи по магазину — данные появятся автоматически
-            </div>
+            <div className="p-4 text-center text-red-500 text-sm">{error}</div>
         );
     }
 
-    const body = latest.responseBody as { data?: PredictData } | PredictData;
-    const data: PredictData = ('data' in body && body.data) ? body.data : body as PredictData;
+    if (!data) {
+        return (
+            <div className="p-4 text-center text-gray-500 text-sm">
+                Загрузка...
+            </div>
+        );
+    }
 
     const { show_banner, probability, banner_show_threshold, reason, signals, contributions } = data;
 
