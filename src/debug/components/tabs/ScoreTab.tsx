@@ -57,7 +57,9 @@ const ScoreTab: React.FC = () => {
 
     const scoreInt = Math.round(probability * 100);
     const thresholdInt = Math.round(banner_show_threshold * 100);
-    const progressPct = Math.min(100, Math.round((probability / banner_show_threshold) * 100));
+    const progressPct = banner_show_threshold > 0
+        ? Math.min(100, Math.round((probability / banner_show_threshold) * 100))
+        : 0;
     const progressColor = show_banner
         ? 'bg-green-500'
         : progressPct >= 80
@@ -105,7 +107,7 @@ const ScoreTab: React.FC = () => {
                     <div className="space-y-1">
                         {positiveContributions.map((c, i) => (
                             <div
-                                key={i}
+                                key={`${c.reason}-${i}`}
                                 className="flex items-center justify-between bg-green-50 border border-green-100 rounded px-3 py-2"
                             >
                                 <div className="flex items-center gap-2">
@@ -128,7 +130,7 @@ const ScoreTab: React.FC = () => {
                     <div className="space-y-1">
                         {negativeContributions.map((c, i) => (
                             <div
-                                key={i}
+                                key={`${c.reason}-${i}`}
                                 className="flex items-center justify-between bg-red-50 border border-red-100 rounded px-3 py-2"
                             >
                                 <div className="flex items-center gap-2">
