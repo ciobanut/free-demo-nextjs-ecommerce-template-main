@@ -78,7 +78,6 @@ const ScoreTab: React.FC = () => {
         below_threshold:   { text: 'Скора пока не хватает для показа баннера', color: 'text-yellow-600' },
         no_eligible_banner:{ text: 'Нет подходящего баннера для твоего профиля', color: 'text-gray-500' },
         already_shown:     { text: 'Баннер уже был показан в этой сессии', color: 'text-blue-600' },
-        admin_weights:     { text: 'Баннер показан ✓', color: 'text-green-600' },
     };
     const status = show_banner
         ? { text: 'Баннер показан ✓', color: 'text-green-600' }
