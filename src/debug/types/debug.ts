@@ -21,7 +21,6 @@ export interface DebugState {
     visitorId: string | null;
     requests: {
         track: NetworkLog[];
-        predict: NetworkLog[];
     };
     pageMetrics: PageMetrics;
     isCollapsed: boolean;

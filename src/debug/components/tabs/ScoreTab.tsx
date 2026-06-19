@@ -5,13 +5,13 @@ import { useEnvironment } from '../../../app/context/EnvironmentContext';
 import { getEnvironmentConfig } from '../../../config/environments';
 
 const SIGNAL_MAP: Record<string, { label: string; unit: string | null; tip: string }> = {
-    pages_viewed:           { label: 'Просмотрено страниц',   unit: 'стр.', tip: 'Просмотри ещё страниц магазина' },
-    session_duration_sec:   { label: 'Время на сайте',         unit: 'сек.', tip: 'Проведи больше времени на сайте' },
-    scroll_depth_pct:       { label: 'Глубина прокрутки',      unit: '%',    tip: 'Прокрути страницу ниже' },
-has_search_query:       { label: 'Использован поиск',      unit: null,   tip: 'Воспользуйся поиском по магазину' },
-    has_added_to_cart:      { label: 'Добавлено в корзину',    unit: null,   tip: 'Добавь товар в корзину' },
-    has_added_to_favorites: { label: 'Добавлено в избранное',  unit: null,   tip: 'Добавь товар в избранное' },
-    is_returning:           { label: 'Повторный визит',        unit: null,   tip: 'Вернись на сайт ещё раз' },
+    pages_viewed:           { label: 'Pages Viewed',       unit: 'pgs',  tip: 'Browse more pages of the store' },
+    session_duration_sec:   { label: 'Time on Site',        unit: 'sec.', tip: 'Spend more time on the site' },
+    scroll_depth_pct:       { label: 'Scroll Depth',        unit: '%',    tip: 'Scroll further down the page' },
+    has_search_query:       { label: 'Search Used',         unit: null,   tip: 'Use the store search' },
+    has_added_to_cart:      { label: 'Added to Cart',       unit: null,   tip: 'Add a product to the cart' },
+    has_added_to_favorites: { label: 'Added to Favorites',  unit: null,   tip: 'Add a product to favorites' },
+    is_returning:           { label: 'Returning Visit',     unit: null,   tip: 'Return to the site again' },
 };
 
 interface Contribution {
@@ -38,7 +38,7 @@ const ScoreTab: React.FC = () => {
         const poll = async () => {
             const sessionId = sessionStorage.getItem('jp_session_id');
             if (!sessionId) {
-                setError('Ожидание сессии от виджета...');
+                setError('Waiting for session from widget...');
                 return;
             }
             try {
@@ -48,10 +48,10 @@ const ScoreTab: React.FC = () => {
                     setData(json.data);
                     setError(null);
                 } else {
-                    setError(json.message || 'Ошибка API');
+                    setError(json.message || 'API error');
                 }
             } catch {
-                setError('Сеть недоступна');
+                setError('Network unavailable');
             }
         };
 
@@ -69,7 +69,7 @@ const ScoreTab: React.FC = () => {
     if (!data) {
         return (
             <div className="p-4 text-center text-gray-500 text-sm">
-                Загрузка...
+                Loading...
             </div>
         );
     }
@@ -79,7 +79,7 @@ const ScoreTab: React.FC = () => {
     if (!signals || !contributions) {
         return (
             <div className="p-4 text-center text-gray-500 text-sm">
-                Данные скора недоступны для этой конфигурации
+                Score data unavailable for this configuration
             </div>
         );
     }
@@ -104,12 +104,12 @@ const ScoreTab: React.FC = () => {
     });
 
     const statusConfig: Record<string, { text: string; color: string }> = {
-        below_threshold:   { text: 'Скора пока не хватает для показа баннера', color: 'text-yellow-600' },
-        no_eligible_banner:{ text: 'Нет подходящего баннера для твоего профиля', color: 'text-gray-500' },
-        already_shown:     { text: 'Баннер уже был показан в этой сессии', color: 'text-blue-600' },
+        below_threshold:    { text: 'Score not yet high enough to show banner', color: 'text-yellow-600' },
+        no_eligible_banner: { text: 'No suitable banner for your profile',      color: 'text-gray-500' },
+        already_shown:      { text: 'Banner already shown in this session',     color: 'text-blue-600' },
     };
     const status = show_banner
-        ? { text: 'Баннер показан ✓', color: 'text-green-600' }
+        ? { text: 'Banner shown ✓', color: 'text-green-600' }
         : statusConfig[reason] ?? { text: reason, color: 'text-gray-500' };
 
     return (
@@ -117,8 +117,8 @@ const ScoreTab: React.FC = () => {
             {/* Progress bar */}
             <div>
                 <div className="flex justify-between text-xs text-gray-600 mb-1">
-                    <span>Скор: <strong>{scoreInt}</strong></span>
-                    <span>Порог: <strong>{thresholdInt}</strong></span>
+                    <span>Score: <strong>{scoreInt}</strong></span>
+                    <span>Threshold: <strong>{thresholdInt}</strong></span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                     <div
@@ -131,7 +131,7 @@ const ScoreTab: React.FC = () => {
             {/* Already counting */}
             {positiveContributions.length > 0 && (
                 <div>
-                    <h4 className="text-xs font-semibold text-gray-700 mb-2">Уже засчитано</h4>
+                    <h4 className="text-xs font-semibold text-gray-700 mb-2">Already counted</h4>
                     <div className="space-y-1">
                         {positiveContributions.map((c, i) => (
                             <div
@@ -154,7 +154,7 @@ const ScoreTab: React.FC = () => {
             {/* Penalties */}
             {negativeContributions.length > 0 && (
                 <div>
-                    <h4 className="text-xs font-semibold text-gray-700 mb-2">Штрафы</h4>
+                    <h4 className="text-xs font-semibold text-gray-700 mb-2">Penalties</h4>
                     <div className="space-y-1">
                         {negativeContributions.map((c, i) => (
                             <div
@@ -177,7 +177,7 @@ const ScoreTab: React.FC = () => {
             {/* What else can help */}
             {inactiveSignals.length > 0 && (
                 <div>
-                    <h4 className="text-xs font-semibold text-gray-700 mb-2">Что ещё поможет</h4>
+                    <h4 className="text-xs font-semibold text-gray-700 mb-2">What else can help</h4>
                     <div className="space-y-1">
                         {inactiveSignals.map(([key, meta]) => (
                             <div

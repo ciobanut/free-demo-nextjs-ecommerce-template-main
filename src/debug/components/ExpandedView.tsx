@@ -4,26 +4,23 @@ import React, { useState } from 'react';
 import { useAppSelector } from '../../redux/store';
 import OverviewTab from './tabs/OverviewTab';
 import TrackRequestsTab from './tabs/TrackRequestsTab';
-import PredictRequestsTab from './tabs/PredictRequestsTab';
 import ScoreTab from './tabs/ScoreTab';
 
 interface ExpandedViewProps {
     onCollapse: () => void;
 }
 
-type TabType = 'overview' | 'track' | 'predict' | 'score';
+type TabType = 'overview' | 'track' | 'score';
 
 const ExpandedView: React.FC<ExpandedViewProps> = ({ onCollapse }) => {
     const [activeTab, setActiveTab] = useState<TabType>('overview');
     const { requests } = useAppSelector((state) => state.debugReducer);
 
     const trackCount = requests.track.length;
-    const predictCount = requests.predict.length;
 
     const tabs = [
         { id: 'overview' as TabType, label: 'Overview' },
         { id: 'track' as TabType, label: `Track Requests (${trackCount})` },
-        { id: 'predict' as TabType, label: `Predict Requests (${predictCount})` },
         { id: 'score' as TabType, label: 'Score' },
     ];
 
@@ -33,8 +30,6 @@ const ExpandedView: React.FC<ExpandedViewProps> = ({ onCollapse }) => {
                 return <OverviewTab />;
             case 'track':
                 return <TrackRequestsTab />;
-            case 'predict':
-                return <PredictRequestsTab />;
             case 'score':
                 return <ScoreTab />;
             default:

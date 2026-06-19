@@ -21,8 +21,6 @@ const TrackRequestsTab: React.FC = () => {
     };
 
     const clearTrackLogs = () => {
-        // We need to clear only track logs, but the action clears both
-        // For now, we'll clear all logs. Could be improved later.
         dispatch(clearLogs());
     };
 

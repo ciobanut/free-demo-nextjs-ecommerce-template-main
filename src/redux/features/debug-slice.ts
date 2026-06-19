@@ -5,7 +5,6 @@ const initialState: DebugState = {
     visitorId: null,
     requests: {
         track: [],
-        predict: [],
     },
     pageMetrics: {
         url: "",
@@ -14,7 +13,7 @@ const initialState: DebugState = {
         timeOnPageMs: 0,
         referrer: null,
     },
-    isCollapsed: true, // false = expanded, true = collapsed
+    isCollapsed: true,
 };
 
 const debugSlice = createSlice({
@@ -27,15 +26,11 @@ const debugSlice = createSlice({
         addTrackRequest: (state, action: PayloadAction<NetworkLog>) => {
             state.requests.track.push(action.payload);
         },
-        addPredictRequest: (state, action: PayloadAction<NetworkLog>) => {
-            state.requests.predict.push(action.payload);
-        },
         updatePageMetrics: (state, action: PayloadAction<Partial<PageMetrics>>) => {
             state.pageMetrics = { ...state.pageMetrics, ...action.payload };
         },
         clearLogs: (state) => {
             state.requests.track = [];
-            state.requests.predict = [];
         },
         toggleCollapsed: (state) => {
             state.isCollapsed = !state.isCollapsed;
@@ -49,7 +44,6 @@ const debugSlice = createSlice({
 export const {
     setVisitorId,
     addTrackRequest,
-    addPredictRequest,
     updatePageMetrics,
     clearLogs,
     toggleCollapsed,
