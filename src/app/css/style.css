@@ -32,6 +32,14 @@
   }
 }
 
+/* EnvBadge — triunghiul devine complet opac la hover */
+.group:hover a[href="/env"] {
+  border-top-color: rgba(220, 38, 38, 1) !important;
+}
+.group:hover .env-badge-link {
+  opacity: 1 !important;
+}
+
 /* third-party libraries CSS */
 
 /* clears the ‘X’ from Internet Explorer */

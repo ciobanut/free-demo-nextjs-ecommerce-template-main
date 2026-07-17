@@ -20,6 +20,7 @@ import { EnvironmentProvider, useEnvironment } from "../context/EnvironmentConte
 import Script from "next/script";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
+import EnvBadge from "@/components/EnvBadge";
 import { getEnvironmentConfig } from "@/config/environments";
 
 const BehavoraScript = () => {
@@ -57,6 +58,7 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
             <CartModalProvider>
               <ModalProvider>
                 <PreviewSliderProvider>
+                  <EnvBadge />
                   <Header />
                   {children}
 
