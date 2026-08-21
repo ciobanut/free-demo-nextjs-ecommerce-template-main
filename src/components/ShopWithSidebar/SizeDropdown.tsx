@@ -1,8 +1,19 @@
 "use client";
 import React, { useState } from "react";
 
-const SizeDropdown = () => {
+const SIZE_OPTIONS = ["M", "L", "XL", "XXL"];
+
+const SizeDropdown = ({ selected = [], onChange }) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
+
+  const handleToggle = (size) => {
+    if (selected.includes(size)) {
+      onChange(selected.filter((s) => s !== size));
+    } else {
+      onChange([...selected, size]);
+    }
+  };
+
   return (
     <div className="bg-white shadow-1 rounded-lg">
       <div
@@ -43,53 +54,28 @@ const SizeDropdown = () => {
           toggleDropdown ? "flex" : "hidden"
         }`}
       >
-        <label
-          htmlFor="sizeM"
-          className="cursor-pointer select-none flex items-center rounded-md bg-blue text-white hover:bg-blue hover:text-white"
-        >
-          <div className="relative">
-            <input type="radio" name="size" id="sizeM" className="sr-only" />
-            <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              M
+        {SIZE_OPTIONS.map((size) => (
+          <label
+            key={size}
+            htmlFor={`size-${size}`}
+            className={`cursor-pointer select-none flex items-center rounded-md text-custom-sm py-[5px] px-3.5 border ease-out duration-200 ${
+              selected.includes(size)
+                ? "bg-blue text-white hover:bg-blue hover:text-white"
+                : "bg-white text-dark border-gray-3 hover:bg-blue hover:text-white"
+            }`}
+          >
+            <div className="relative">
+              <input
+                type="checkbox"
+                id={`size-${size}`}
+                className="sr-only"
+                checked={selected.includes(size)}
+                onChange={() => handleToggle(size)}
+              />
+              <div>{size}</div>
             </div>
-          </div>
-        </label>
-
-        <label
-          htmlFor="sizeL"
-          className="cursor-pointer select-none flex items-center rounded-md hover:bg-blue hover:text-white"
-        >
-          <div className="relative">
-            <input type="radio" name="size" id="sizeL" className="sr-only" />
-            <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              L
-            </div>
-          </div>
-        </label>
-
-        <label
-          htmlFor="sizeXL"
-          className="cursor-pointer select-none flex items-center rounded-md hover:bg-blue hover:text-white"
-        >
-          <div className="relative">
-            <input type="radio" name="size" id="sizeXL" className="sr-only" />
-            <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              XL
-            </div>
-          </div>
-        </label>
-
-        <label
-          htmlFor="sizeXXL"
-          className="cursor-pointer select-none flex items-center rounded-md hover:bg-blue hover:text-white"
-        >
-          <div className="relative">
-            <input type="radio" name="size" id="sizeXXL" className="sr-only" />
-            <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              XXL
-            </div>
-          </div>
-        </label>
+          </label>
+        ))}
       </div>
     </div>
   );

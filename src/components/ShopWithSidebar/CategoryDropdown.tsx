@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
-const CategoryItem = ({ category }) => {
-  const [selected, setSelected] = useState(false);
+const CategoryItem = ({ category, selected, onToggle }) => {
   return (
     <button
       className={`${
         selected && "text-blue"
       } group flex items-center justify-between ease-out duration-200 hover:text-blue `}
-      onClick={() => setSelected(!selected)}
+      onClick={() => onToggle(category.name)}
     >
       <div className="flex items-center gap-2">
         <div
@@ -49,7 +48,7 @@ const CategoryItem = ({ category }) => {
   );
 };
 
-const CategoryDropdown = ({ categories }) => {
+const CategoryDropdown = ({ categories, selected = [], onChange }) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
 
   return (
@@ -96,7 +95,12 @@ const CategoryDropdown = ({ categories }) => {
         }`}
       >
         {categories.map((category, key) => (
-          <CategoryItem key={key} category={category} />
+          <CategoryItem
+            key={key}
+            category={category}
+            selected={selected.includes(category.name)}
+            onToggle={onChange}
+          />
         ))}
       </div>
     </div>
