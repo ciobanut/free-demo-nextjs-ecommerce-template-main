@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import CustomSelect from "./CustomSelect";
 import CategoryDropdown from "./CategoryDropdown";
@@ -16,6 +16,13 @@ const ShopWithSidebar = () => {
   const [productSidebar, setProductSidebar] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
 
+  // Filter state
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedGender, setSelectedGender] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [priceRange, setPriceRange] = useState({ from: 0, to: 1000 });
+
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
       setStickyMenu(true);
@@ -23,6 +30,38 @@ const ShopWithSidebar = () => {
       setStickyMenu(false);
     }
   };
+
+  const handleToggleCategory = (name: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(name) ? prev.filter((c) => c !== name) : [...prev, name]
+    );
+  };
+
+  const handleToggleGender = (name: string) => {
+    setSelectedGender((prev) =>
+      prev.includes(name) ? prev.filter((g) => g !== name) : [...prev, name]
+    );
+  };
+
+  const handleClearAll = () => {
+    setSelectedCategories([]);
+    setSelectedGender([]);
+    setSelectedSizes([]);
+    setSelectedColor("");
+    setPriceRange({ from: 0, to: 1000 });
+  };
+
+  const filteredProducts = useMemo(() => {
+    return shopData.filter((item) => {
+      if (selectedCategories.length > 0 && !selectedCategories.includes(item.category)) return false;
+      if (selectedGender.length > 0 && !selectedGender.includes(item.gender)) return false;
+      if (selectedSizes.length > 0 && !selectedSizes.includes(item.size)) return false;
+      if (selectedColor && item.color !== selectedColor) return false;
+      const price = item.discountedPrice || item.price;
+      if (price < priceRange.from || price > priceRange.to) return false;
+      return true;
+    });
+  }, [selectedCategories, selectedGender, selectedSizes, selectedColor, priceRange]);
 
   const options = [
     { label: "Latest Products", value: "0" },
@@ -152,24 +191,24 @@ const ShopWithSidebar = () => {
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
                     <div className="flex items-center justify-between">
                       <p>Filters:</p>
-                      <button className="text-blue">Clean All</button>
+                      <button type="button" onClick={handleClearAll} className="text-blue">Clean All</button>
                     </div>
                   </div>
 
                   {/* <!-- category box --> */}
-                  <CategoryDropdown categories={categories} />
+                  <CategoryDropdown categories={categories} selected={selectedCategories} onChange={handleToggleCategory} />
 
                   {/* <!-- gender box --> */}
-                  <GenderDropdown genders={genders} />
+                  <GenderDropdown genders={genders} selected={selectedGender} onChange={handleToggleGender} />
 
                   {/* // <!-- size box --> */}
-                  <SizeDropdown />
+                  <SizeDropdown selected={selectedSizes} onChange={setSelectedSizes} />
 
                   {/* // <!-- color box --> */}
-                  <ColorsDropdwon />
+                  <ColorsDropdwon selected={selectedColor} onChange={setSelectedColor} />
 
                   {/* // <!-- price range box --> */}
-                  <PriceDropdown />
+                  <PriceDropdown value={priceRange} onChange={setPriceRange} />
                 </div>
               </form>
             </div>
@@ -184,7 +223,7 @@ const ShopWithSidebar = () => {
                     <CustomSelect options={options} />
 
                     <p>
-                      Showing <span className="text-dark">9 of 50</span>{" "}
+                      Showing <span className="text-dark">{filteredProducts.length} of {shopData.length}</span>{" "}
                       Products
                     </p>
                   </div>
@@ -278,12 +317,21 @@ const ShopWithSidebar = () => {
                     : "flex flex-col gap-7.5"
                 }`}
               >
-                {shopData.map((item, key) =>
-                  productStyle === "grid" ? (
-                    <SingleGridItem item={item} key={key} />
-                  ) : (
-                    <SingleListItem item={item} key={key} />
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((item, key) =>
+                    productStyle === "grid" ? (
+                      <SingleGridItem item={item} key={item.id} />
+                    ) : (
+                      <SingleListItem item={item} key={item.id} />
+                    )
                   )
+                ) : (
+                  <div className="col-span-full text-center py-20">
+                    <p className="text-dark-4 text-lg">No products match the selected filters.</p>
+                    <button onClick={handleClearAll} className="mt-4 text-blue hover:underline">
+                      Clear all filters
+                    </button>
+                  </div>
                 )}
               </div>
               {/* <!-- Products Grid Tab Content End --> */}

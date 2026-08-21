@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
 
-const ColorsDropdwon = () => {
+import { useState } from "react";
+
+const ColorsDropdwon = ({ selected, onChange }) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
-  const [activeColor, setActiveColor] = useState("blue");
 
   const colors = ["red", "blue", "orange", "pink", "purple"];
 
@@ -46,23 +46,24 @@ const ColorsDropdwon = () => {
           toggleDropdown ? "flex" : "hidden"
         }`}
       >
-        {colors.map((color, key) => (
+        {colors.map((color) => (
           <label
-            key={key}
-            htmlFor={color}
+            key={color}
+            htmlFor={`color-${color}`}
             className="cursor-pointer select-none flex items-center"
           >
             <div className="relative">
               <input
                 type="radio"
                 name="color"
-                id={color}
+                id={`color-${color}`}
                 className="sr-only"
-                onChange={() => setActiveColor(color)}
+                checked={selected === color}
+                onChange={() => onChange(color)}
               />
               <div
-                className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${
-                  activeColor === color && "border"
+                className={`flex items-center justify-center w-5.5 h-5.5 rounded-full border-2 ${
+                  selected === color ? "border-current" : "border-transparent"
                 }`}
                 style={{ borderColor: `${color}` }}
               >
