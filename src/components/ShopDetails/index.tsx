@@ -9,8 +9,13 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { Product } from "@/types/product";
+import { useParams } from "next/navigation";
+import shopData from "@/components/Shop/shopData";
 
 const ShopDetails = () => {
+  const params = useParams();
+  const productId = params?.id ? Number(params.id) : 1;
+
   const [activeColor, setActiveColor] = useState("blue");
   const { openPreviewModal } = usePreviewSlider();
   const [previewImg, setPreviewImg] = useState(0);
@@ -80,18 +85,7 @@ const ShopDetails = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const alreadyExist = localStorage.getItem("productDetails");
-  const productFromStorage = useAppSelector(
-    (state) => state.productDetailsReducer.value
-  );
-
-  const product: Product = alreadyExist
-    ? (JSON.parse(alreadyExist) as Product)
-    : productFromStorage;
-
-  useEffect(() => {
-    localStorage.setItem("productDetails", JSON.stringify(product));
-  }, [product]);
+  const product: Product = shopData.find((p) => p.id === productId) || shopData[0];
 
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
