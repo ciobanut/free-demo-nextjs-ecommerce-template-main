@@ -1,4 +1,5 @@
 # the name by which the project can be referenced within Serena/when chatting with the LLM.
+# the name by which the project can be referenced within Serena/when chatting with the LLM.
 project_name: "behavora-demo"
 
 # list of languages for which language servers are started (LSP backend only); choose from:
@@ -59,10 +60,19 @@ ignore_all_files_in_gitignore: true
 # Maps the language key to the options.
 # The settings are considered only if the project is trusted (see global configuration to define trusted projects).
 # See https://oraios.github.io/serena/02-usage/050_configuration.html#language-server-specific-settings
+# The settings are considered only if the project is trusted (see global configuration to define trusted projects).
+# See https://oraios.github.io/serena/02-usage/050_configuration.html#language-server-specific-settings
 ls_specific_settings: {}
 
 # list of additional paths to ignore in this project.
 # Same syntax as gitignore, so you can use * and **.
+# Important: quote patterns that start with `*`, otherwise YAML treats them as aliases.
+# Example:
+#   ignored_paths:
+#     - "examples/**"
+#     - ".worktrees/**"
+#     - "**/bin/**"
+#     - "**/obj/**"
 # Important: quote patterns that start with `*`, otherwise YAML treats them as aliases.
 # Example:
 #   ignored_paths:
