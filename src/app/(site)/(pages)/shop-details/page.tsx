@@ -1,19 +1,8 @@
 import React from "react";
-import ShopDetails from "@/components/ShopDetails";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Shop Details Page",
-  description: "This is Shop Details Page for NextCommerce Template",
-  // other metadata
-};
+import { redirect } from "next/navigation";
 
 const ShopDetailsPage = () => {
-  return (
-    <main>
-      <ShopDetails />
-    </main>
-  );
+  redirect("/products/1");
 };
 
 export default ShopDetailsPage;
