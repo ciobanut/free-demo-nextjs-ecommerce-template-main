@@ -86,13 +86,21 @@ export const useNetworkLogger = () => {
                     return response;
                 } catch (error) {
                     // Log failed requests too
+                    let failedRequestBody: unknown = null;
+                    if (config?.body) {
+                        try {
+                            failedRequestBody = JSON.parse(config.body as string);
+                        } catch {
+                            failedRequestBody = config.body;
+                        }
+                    }
                     const networkLog = {
                         id: requestId,
                         timestamp: startTime,
                         method: config?.method || 'GET',
                         url,
                         status: 0, // Network error
-                        requestBody: config?.body ? JSON.parse(config.body as string) : null,
+                        requestBody: failedRequestBody,
                         responseBody: null,
                         responseTime: Date.now() - startTime,
                     };
@@ -103,7 +111,17 @@ export const useNetworkLogger = () => {
                         dispatch(addPredictRequest(networkLog));
                     }
 
-                    throw error;
+                    // Don't re-throw - these are background analytics requests
+                }
+            }
+
+            // For Behavora API requests, suppress network errors silently
+            if (url.includes(apiBaseUrl)) {
+                try {
+                    return await originalFetch(...args);
+                } catch {
+                    // Return a synthetic error response for failed Behavora requests
+                    return new Response(null, { status: 0, statusText: 'Network Error' });
                 }
             }
 
