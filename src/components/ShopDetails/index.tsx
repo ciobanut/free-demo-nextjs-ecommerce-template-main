@@ -8,6 +8,7 @@ import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/redux/features/cart-slice";
+import { addToRecentlyViewed } from "@/redux/features/recently-viewed-slice";
 import { Product } from "@/types/product";
 import { useParams } from "next/navigation";
 import shopData from "@/components/Shop/shopData";
@@ -86,6 +87,21 @@ const ShopDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const product: Product = shopData.find((p) => p.id === productId) || shopData[0];
+
+  // Track product view
+  useEffect(() => {
+    if (product && product.id) {
+      dispatch(
+        addToRecentlyViewed({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          discountedPrice: product.discountedPrice,
+          imgs: product.imgs,
+        })
+      );
+    }
+  }, [product.id, dispatch]);
 
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
