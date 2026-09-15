@@ -47,13 +47,13 @@ const ExpandedView: React.FC<ExpandedViewProps> = ({ onCollapse }) => {
     };
 
     return (
-        <div className="fixed bottom-4 right-4 z-[9999] w-full max-w-md md:max-w-lg bg-white rounded-lg shadow-2xl border border-gray-200">
+        <div className="fixed bottom-4 right-4 z-[9999] w-full max-w-md md:max-w-lg bg-white rounded-lg shadow-2xl border border-gray-3">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-                <h3 className="text-lg font-semibold text-gray-800">Debug Panel</h3>
+            <div className="flex items-center justify-between p-4 border-b border-gray-3 bg-gray-1 rounded-t-lg">
+                <h3 className="text-lg font-semibold text-gray-7">Debug Panel</h3>
                 <button
                     onClick={onCollapse}
-                    className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    className="text-gray-6 hover:text-gray-7 transition-colors duration-200"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -62,14 +62,14 @@ const ExpandedView: React.FC<ExpandedViewProps> = ({ onCollapse }) => {
             </div>
 
             {/* Tabs */}
-            <div className="flex border-b border-gray-200">
+            <div className="flex border-b border-gray-3">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex-1 py-2 px-4 text-sm font-medium transition-colors duration-200 ${activeTab === tab.id
-                                ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                                ? 'text-blue border-b-2 border-blue bg-blue-light-5'
+                                : 'text-gray-6 hover:text-gray-7 hover:bg-gray-1'
                             }`}
                     >
                         {tab.label}

@@ -28,7 +28,7 @@ const TrackRequestsTab: React.FC = () => {
 
     if (trackRequests.length === 0) {
         return (
-            <div className="p-4 text-center text-gray-500">
+            <div className="p-4 text-center text-gray-6">
                 No track requests captured yet.
             </div>
         );
@@ -37,23 +37,23 @@ const TrackRequestsTab: React.FC = () => {
     return (
         <div className="p-4">
             <div className="flex justify-between items-center mb-4">
-                <h4 className="text-sm font-medium text-gray-700">
+                <h4 className="text-sm font-medium text-gray-7">
                     Track Requests ({trackRequests.length})
                 </h4>
                 <button
                     onClick={clearTrackLogs}
-                    className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded transition-colors duration-200"
+                    className="text-xs bg-red hover:bg-red-dark text-white px-2 py-1 rounded transition-colors duration-200"
                 >
                     Clear
                 </button>
             </div>
 
             {latestRequest && (
-                <div className="mb-4 rounded bg-gray-100 p-4 border border-gray-200">
+                <div className="mb-4 rounded bg-gray-2 p-4 border border-gray-3">
                     <div className="grid gap-4">
                         <div>
-                            <h5 className="text-xs font-medium text-gray-600 mb-2">Latest Request Payload</h5>
-                            <pre className="text-xs bg-gray-50 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
+                            <h5 className="text-xs font-medium text-gray-6 mb-2">Latest Request Payload</h5>
+                            <pre className="text-xs bg-gray-1 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
                                 {latestRequest.requestBody
                                     ? JSON.stringify(latestRequest.requestBody, null, 2)
                                     : 'No request body'
@@ -61,8 +61,8 @@ const TrackRequestsTab: React.FC = () => {
                             </pre>
                         </div>
                         <div>
-                            <h5 className="text-xs font-medium text-gray-600 mb-2">Latest Response Payload</h5>
-                            <pre className="text-xs bg-gray-50 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
+                            <h5 className="text-xs font-medium text-gray-6 mb-2">Latest Response Payload</h5>
+                            <pre className="text-xs bg-gray-1 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
                                 {latestRequest.responseBody
                                     ? JSON.stringify(latestRequest.responseBody, null, 2)
                                     : 'No response body'
@@ -71,7 +71,7 @@ const TrackRequestsTab: React.FC = () => {
                         </div>
                     </div>
                     {latestRequest.responseTime && (
-                        <div className="mt-2 text-xs text-gray-500">
+                        <div className="mt-2 text-xs text-gray-6">
                             Response time: {latestRequest.responseTime}ms
                         </div>
                     )}
@@ -80,21 +80,21 @@ const TrackRequestsTab: React.FC = () => {
 
             <div className="space-y-2 max-h-80 overflow-y-auto">
                 {trackRequests.slice().reverse().map((request) => (
-                    <div key={request.id} className="border border-gray-200 rounded-lg">
+                    <div key={request.id} className="border border-gray-3 rounded-lg">
                         <button
                             onClick={() => toggleExpanded(request.id)}
-                            className="w-full text-left p-3 hover:bg-gray-50 transition-colors duration-200"
+                            className="w-full text-left p-3 hover:bg-gray-1 transition-colors duration-200"
                         >
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-gray-700">
+                                    <span className="text-sm font-medium text-gray-7">
                                         {formatTimestamp(request.timestamp)}
                                     </span>
                                     <span className={`text-xs px-2 py-1 rounded ${request.status && request.status >= 200 && request.status < 300
-                                            ? 'bg-green-100 text-green-800'
+                                            ? 'bg-green-light-6 text-green-dark'
                                             : request.status
-                                                ? 'bg-red-100 text-red-800'
-                                                : 'bg-yellow-100 text-yellow-800'
+                                                ? 'bg-red-light-5 text-red-dark'
+                                                : 'bg-yellow-light-2 text-yellow-dark-2'
                                         }`}>
                                         {request.status || 'ERR'}
                                     </span>
@@ -112,11 +112,11 @@ const TrackRequestsTab: React.FC = () => {
                         </button>
 
                         {expandedRequest === request.id && (
-                            <div className="px-3 pb-3 border-t border-gray-100">
+                            <div className="px-3 pb-3 border-t border-gray-2">
                                 <div className="grid grid-cols-2 gap-4 mt-3">
                                     <div>
-                                        <h5 className="text-xs font-medium text-gray-600 mb-2">Request Payload</h5>
-                                        <pre className="text-xs bg-gray-50 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
+                                        <h5 className="text-xs font-medium text-gray-6 mb-2">Request Payload</h5>
+                                        <pre className="text-xs bg-gray-1 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
                                             {request.requestBody
                                                 ? JSON.stringify(request.requestBody, null, 2)
                                                 : 'No request body'
@@ -124,8 +124,8 @@ const TrackRequestsTab: React.FC = () => {
                                         </pre>
                                     </div>
                                     <div>
-                                        <h5 className="text-xs font-medium text-gray-600 mb-2">Response Payload</h5>
-                                        <pre className="text-xs bg-gray-50 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
+                                        <h5 className="text-xs font-medium text-gray-6 mb-2">Response Payload</h5>
+                                        <pre className="text-xs bg-gray-1 p-2 rounded border overflow-x-auto max-h-40 overflow-y-auto">
                                             {request.responseBody
                                                 ? JSON.stringify(request.responseBody, null, 2)
                                                 : 'No response body'
@@ -134,7 +134,7 @@ const TrackRequestsTab: React.FC = () => {
                                     </div>
                                 </div>
                                 {request.responseTime && (
-                                    <div className="mt-2 text-xs text-gray-500">
+                                    <div className="mt-2 text-xs text-gray-6">
                                         Response time: {request.responseTime}ms
                                     </div>
                                 )}

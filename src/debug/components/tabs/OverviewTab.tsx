@@ -41,10 +41,10 @@ const OverviewTab: React.FC = () => {
             <div className="space-y-3">
                 {metrics.map((metric, index) => (
                     <div key={index} className="flex justify-between items-start">
-                        <span className="text-sm font-medium text-gray-600 min-w-0 flex-shrink-0 mr-4">
+                        <span className="text-sm font-medium text-gray-6 min-w-0 flex-shrink-0 mr-4">
                             {metric.label}:
                         </span>
-                        <span className="text-sm text-gray-900 break-all text-right">
+                        <span className="text-sm text-gray-7 break-all text-right">
                             {metric.value}
                         </span>
                     </div>
