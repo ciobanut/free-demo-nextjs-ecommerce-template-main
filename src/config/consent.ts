@@ -57,15 +57,6 @@ const getCookie = (name: string): string | null => {
   }
 }
 
-const setCookie = (name: string, value: string) => {
-  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=/; SameSite=Lax`
-}
-
-const removeCookie = (name: string) => {
-  document.cookie = `${encodeURIComponent(name)}=; path=/; max-age=0`
-  document.cookie = `${name}=; path=/; max-age=0`
-}
-
 export const readStoredConsent = (storage: ConsentStorage, key: string): string | null => {
   try {
     if (storage === 'localStorage') return localStorage.getItem(key)
@@ -74,32 +65,4 @@ export const readStoredConsent = (storage: ConsentStorage, key: string): string 
   } catch {
     return null
   }
-}
-
-export const writeStoredConsent = (storage: ConsentStorage, key: string, value: string) => {
-  if (storage === 'localStorage') {
-    localStorage.setItem(key, value)
-    return
-  }
-
-  if (storage === 'sessionStorage') {
-    sessionStorage.setItem(key, value)
-    return
-  }
-
-  setCookie(key, value)
-}
-
-export const removeStoredConsent = (storage: ConsentStorage, key: string) => {
-  if (storage === 'localStorage') {
-    localStorage.removeItem(key)
-    return
-  }
-
-  if (storage === 'sessionStorage') {
-    sessionStorage.removeItem(key)
-    return
-  }
-
-  removeCookie(key)
 }

@@ -9,9 +9,7 @@ import {
   DEFAULT_CONSENT_CONFIG,
   getConsentConfig,
   readStoredConsent,
-  removeStoredConsent,
   saveConsentConfig,
-  writeStoredConsent,
 } from "@/config/consent";
 
 const Environment = () => {
@@ -94,39 +92,6 @@ const Environment = () => {
     })
   }
 
-  const persistConsentConfig = (storage: ConsentStorage, key: string, value: string) => {
-    saveConsentConfig({ storage, key, value })
-  }
-
-  const handleSetConsent = () => {
-    const key = consentKey.trim()
-    const value = consentValue.trim()
-
-    if (!key || !value) {
-      showConsentMessage('Key and value are required.')
-      return
-    }
-
-    writeStoredConsent(consentStorage, key, value)
-    persistConsentConfig(consentStorage, key, value)
-    refreshStoredValues(key)
-    showConsentMessage(`Set ${consentStorage}["${key}"] = "${value}". Reload to apply widget attributes.`)
-  }
-
-  const handleRemoveConsent = () => {
-    const key = consentKey.trim()
-
-    if (!key) {
-      showConsentMessage('Key is required.')
-      return
-    }
-
-    removeStoredConsent(consentStorage, key)
-    persistConsentConfig(consentStorage, key, consentValue.trim() || DEFAULT_CONSENT_CONFIG.value)
-    refreshStoredValues(key)
-    showConsentMessage(`Removed ${consentStorage}["${key}"].`)
-  }
-
   const handleApplyConsentToWidget = () => {
     const key = consentKey.trim()
     const value = consentValue.trim()
@@ -136,7 +101,7 @@ const Environment = () => {
       return
     }
 
-    persistConsentConfig(consentStorage, key, value)
+    saveConsentConfig({ storage: consentStorage, key, value })
     window.location.reload()
   }
 
@@ -376,9 +341,8 @@ const Environment = () => {
             <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
               <p className="font-medium text-xl text-dark">Cookie Consent Test</p>
               <p className="text-xs text-dark-4 mt-1">
-                Writes the consent value to <strong>one</strong> storage at a time.
-                The widget reads <code>data-consent-storage</code>, <code>data-consent-key</code> and <code>data-consent-value</code>.
-                Reload after changing storage/key/value so the script attributes update.
+                Tells the widget where to look for consent via <code>data-consent-storage</code>, <code>data-consent-key</code> and <code>data-consent-value</code>.
+                Set or remove the actual value in DevTools. Reload after changing storage/key/value so the script attributes update.
               </p>
             </div>
 
@@ -433,20 +397,6 @@ const Environment = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={handleSetConsent}
-                    className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
-                  >
-                    Set in {consentStorage}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleRemoveConsent}
-                    className="inline-flex font-medium text-dark bg-gray-1 py-3 px-7 rounded-md ease-out duration-200 hover:bg-gray-200"
-                  >
-                    Remove from {consentStorage}
-                  </button>
                   <button
                     type="button"
                     onClick={handleApplyConsentToWidget}
