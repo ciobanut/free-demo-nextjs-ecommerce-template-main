@@ -7,21 +7,15 @@ import Dropdown from "./Dropdown";
 import { useAppSelector } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
-import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
-  const { openCartModal } = useCartModalContext();
 
   const product = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
-
-  const handleOpenCartModal = () => {
-    openCartModal();
-  };
 
   // Sticky menu
   const handleStickyMenu = () => {
@@ -192,10 +186,7 @@ const Header = () => {
                   </div>
                 </Link>
 
-                <button
-                  onClick={handleOpenCartModal}
-                  className="flex items-center gap-2.5"
-                >
+                <Link href="/cart" className="flex items-center gap-2.5">
                   <span className="inline-block relative">
                     <svg
                       width="24"
@@ -241,7 +232,7 @@ const Header = () => {
                       ${totalPrice}
                     </p>
                   </div>
-                </button>
+                </Link>
               </div>
 
               {/* <!-- Hamburger Toggle BTN --> */}
