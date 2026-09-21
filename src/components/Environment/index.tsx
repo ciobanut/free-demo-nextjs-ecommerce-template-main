@@ -3,6 +3,14 @@ import React, { useState, useEffect } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import { useEnvironment } from "@/app/context/EnvironmentContext";
 import { ENVIRONMENTS, getEnvironmentConfig, LOCAL_CONFIG_KEY } from "@/config/environments";
+import {
+  CONSENT_STORAGES,
+  ConsentStorage,
+  DEFAULT_CONSENT_CONFIG,
+  getConsentConfig,
+  readStoredConsent,
+  saveConsentConfig,
+} from "@/config/consent";
 
 const Environment = () => {
   const { currentEnvironment, setEnvironment } = useEnvironment();
@@ -17,6 +25,16 @@ const Environment = () => {
   const [formWsHost, setFormWsHost] = useState(ENVIRONMENTS.local.wsHost ?? '')
   const [formWsPort, setFormWsPort] = useState(ENVIRONMENTS.local.wsPort ?? '')
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
+
+  const [consentStorage, setConsentStorage] = useState<ConsentStorage>(DEFAULT_CONSENT_CONFIG.storage)
+  const [consentKey, setConsentKey] = useState(DEFAULT_CONSENT_CONFIG.key)
+  const [consentValue, setConsentValue] = useState(DEFAULT_CONSENT_CONFIG.value)
+  const [consentMessage, setConsentMessage] = useState<string | null>(null)
+  const [storedValues, setStoredValues] = useState<Record<ConsentStorage, string | null>>({
+    localStorage: null,
+    cookie: null,
+    sessionStorage: null,
+  })
 
   useEffect(() => {
     setIsLocalhost(
@@ -35,6 +53,12 @@ const Environment = () => {
         setFormWsPort(parsed.wsPort || ENVIRONMENTS.local.wsPort || '')
       } catch { }
     }
+
+    const consent = getConsentConfig()
+    setConsentStorage(consent.storage)
+    setConsentKey(consent.key)
+    setConsentValue(consent.value)
+    refreshStoredValues(consent.key)
   }, [])
 
   const saveLocalConfig = (e: React.FormEvent) => {
@@ -53,6 +77,32 @@ const Environment = () => {
 
   const handleApiUrlChange = (val: string) => {
     setFormApiUrl(val)
+  }
+
+  const showConsentMessage = (message: string) => {
+    setConsentMessage(message)
+    setTimeout(() => setConsentMessage(null), 4000)
+  }
+
+  const refreshStoredValues = (key: string) => {
+    setStoredValues({
+      localStorage: readStoredConsent('localStorage', key),
+      cookie: readStoredConsent('cookie', key),
+      sessionStorage: readStoredConsent('sessionStorage', key),
+    })
+  }
+
+  const handleApplyConsentToWidget = () => {
+    const key = consentKey.trim()
+    const value = consentValue.trim()
+
+    if (!key || !value) {
+      showConsentMessage('Key and value are required.')
+      return
+    }
+
+    saveConsentConfig({ storage: consentStorage, key, value })
+    window.location.reload()
   }
 
   useEffect(() => {
@@ -284,6 +334,107 @@ const Environment = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          <div className="mt-7.5 w-full bg-white rounded-xl shadow-1">
+            <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
+              <p className="font-medium text-xl text-dark">Cookie Consent Test</p>
+              <p className="text-xs text-dark-4 mt-1">
+                Tells the widget where to look for consent via <code>data-consent-storage</code>, <code>data-consent-key</code> and <code>data-consent-value</code>.
+                Set or remove the actual value in DevTools. Reload after changing storage/key/value so the script attributes update.
+              </p>
+            </div>
+
+            <div className="p-4 sm:p-7.5">
+              <div className="flex flex-col gap-5">
+                <div>
+                  <p className="block mb-2.5 text-sm font-medium text-dark">Storage</p>
+                  <div className="flex flex-wrap gap-2">
+                    {CONSENT_STORAGES.map((storage) => (
+                      <button
+                        key={storage}
+                        type="button"
+                        onClick={() => setConsentStorage(storage)}
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${consentStorage === storage
+                          ? 'bg-blue text-white'
+                          : 'bg-gray-1 text-dark hover:bg-gray-200'
+                          }`}
+                      >
+                        {storage}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row gap-5">
+                  <div className="w-full">
+                    <label htmlFor="consentKey" className="block mb-2.5">
+                      Key
+                    </label>
+                    <input
+                      type="text"
+                      id="consentKey"
+                      value={consentKey}
+                      onChange={(e) => setConsentKey(e.target.value)}
+                      placeholder="behavora_consent"
+                      className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="consentValue" className="block mb-2.5">
+                      Value
+                    </label>
+                    <input
+                      type="text"
+                      id="consentValue"
+                      value={consentValue}
+                      onChange={(e) => setConsentValue(e.target.value)}
+                      placeholder="granted"
+                      className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleApplyConsentToWidget}
+                    className="inline-flex font-medium text-white bg-dark py-3 px-7 rounded-md ease-out duration-200 hover:bg-dark-2"
+                  >
+                    Apply to widget & reload
+                  </button>
+                  {consentMessage && (
+                    <span className="text-sm text-green">{consentMessage}</span>
+                  )}
+                </div>
+
+                <div className="bg-gray-1 rounded-md p-4 border border-gray-3">
+                  <p className="text-sm font-medium text-dark mb-3">
+                    Current value for key <span className="font-mono">{consentKey || '—'}</span>
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {CONSENT_STORAGES.map((storage) => (
+                      <p key={storage} className="text-sm text-dark-4">
+                        <span className="font-medium text-dark">{storage}:</span>{' '}
+                        <span className="font-mono">
+                          {storedValues[storage] === null ? '—' : storedValues[storage]}
+                        </span>
+                        {storage === consentStorage && (
+                          <span className="ml-2 text-xs text-blue">selected</span>
+                        )}
+                      </p>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => refreshStoredValues(consentKey.trim())}
+                    className="mt-3 text-xs text-blue underline hover:text-blue-dark"
+                  >
+                    Refresh values
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -22,10 +22,12 @@ import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import EnvBadge from "@/components/EnvBadge";
 import { getEnvironmentConfig } from "@/config/environments";
+import { getConsentConfig } from "@/config/consent";
 
 const BehavoraScript = () => {
   const { currentEnvironment } = useEnvironment();
   const envConfig = getEnvironmentConfig(currentEnvironment);
+  const consentConfig = getConsentConfig();
 
   return (
     <Script
@@ -35,6 +37,9 @@ const BehavoraScript = () => {
       data-ws-key={envConfig.wsKey}
       data-ws-host={envConfig.wsHost}
       data-ws-port={envConfig.wsPort}
+      data-consent-storage={consentConfig.storage}
+      data-consent-key={consentConfig.key}
+      data-consent-value={consentConfig.value}
       strategy="afterInteractive"
     />
   );
