@@ -185,7 +185,7 @@ const ShopWithSidebar = () => {
                 </svg>
               </button>
 
-              <form onSubmit={(e) => e.preventDefault()}>
+              <form onSubmit={(e) => e.preventDefault()} id="filters">
                 <div className="flex flex-col gap-6">
                   {/* <!-- filter box --> */}
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
