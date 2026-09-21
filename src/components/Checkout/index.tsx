@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 import Breadcrumb from "../Common/Breadcrumb";
 import Login from "./Login";
 import Shipping from "./Shipping";
@@ -7,14 +8,45 @@ import ShippingMethod from "./ShippingMethod";
 import PaymentMethod from "./PaymentMethod";
 import Coupon from "./Coupon";
 import Billing from "./Billing";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import {
+  removeAllItemsFromCart,
+  selectCartItems,
+  selectTotalPrice,
+} from "@/redux/features/cart-slice";
 
 const Checkout = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector(selectCartItems);
+  const cartTotal = useAppSelector(selectTotalPrice);
+
+  const handleCheckout = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+    const total = itemCount > 0 ? cartTotal : 1072;
+    const orderNumber = `NC-${Date.now().toString().slice(-8)}`;
+
+    localStorage.setItem(
+      "last_order",
+      JSON.stringify({
+        orderNumber,
+        total,
+        itemCount: itemCount > 0 ? itemCount : 3,
+      })
+    );
+
+    dispatch(removeAllItemsFromCart());
+    router.push("/thank-you");
+  };
+
   return (
     <>
       <Breadcrumb title={"Checkout"} pages={["checkout"]} />
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-          <form>
+          <form onSubmit={handleCheckout}>
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11">
               {/* <!-- checkout left --> */}
               <div className="lg:max-w-[670px] w-full">
