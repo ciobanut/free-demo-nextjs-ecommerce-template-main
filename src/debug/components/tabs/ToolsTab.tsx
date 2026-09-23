@@ -8,7 +8,15 @@ const clearSession = () => {
 };
 
 const clearUser = () => {
-    document.cookie = 'jp_user_id=; path=/; max-age=0';
+    const cookieDomain = window.location.hostname.replace(/^www\./i, '');
+
+    document.cookie = [
+        'jp_user_id=',
+        'Path=/',
+        'Max-Age=0',
+        `Domain=${cookieDomain}`,
+        'SameSite=Lax',
+    ].join('; ');
 };
 
 const ToolsTab: React.FC = () => {
