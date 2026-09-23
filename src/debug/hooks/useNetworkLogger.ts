@@ -11,8 +11,10 @@ export const useNetworkLogger = () => {
     const { currentEnvironment } = useEnvironment();
 
     useEffect(() => {
-        // Set visitor ID from localStorage
-        const visitorId = localStorage.getItem('jp_user_id');
+        const visitorId = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('jp_user_id='))
+            ?.split('=')[1] ?? null;
         dispatch(setVisitorId(visitorId));
 
         const { apiBaseUrl } = getEnvironmentConfig(currentEnvironment);

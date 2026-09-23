@@ -8,7 +8,7 @@ const clearSession = () => {
 };
 
 const clearUser = () => {
-    localStorage.removeItem('jp_user_id');
+    document.cookie = 'jp_user_id=; path=/; max-age=0';
 };
 
 const ToolsTab: React.FC = () => {
