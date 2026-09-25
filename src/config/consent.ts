@@ -12,8 +12,8 @@ export const CONSENT_STORAGES: ConsentStorage[] = ['localStorage', 'cookie', 'se
 
 export const DEFAULT_CONSENT_CONFIG: ConsentConfig = {
   storage: 'localStorage',
-  key: 'behavora_consent',
-  value: 'granted',
+  key: 'cookieConsent',
+  value: 'true',
 }
 
 const isConsentStorage = (value: unknown): value is ConsentStorage =>
