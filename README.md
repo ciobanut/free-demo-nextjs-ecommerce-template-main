@@ -33,6 +33,24 @@ Visit `/env` in the browser to switch between Dev, Prod, and Local environments.
 - **Local** is only visible when running on `localhost`.
 - The Local environment has a form to override site ID, API URL, script URL, and WebSocket settings. Changes are saved to `localStorage` and persist across reloads.
 
+### Track API version (v1 / v2)
+
+The widget sends tracking events to `/api/v1/track` by default. To switch it to `/api/v2/track`, the integration script must carry the `data-track-api-version="v2"` attribute:
+
+```html
+<script
+  src="https://cdn.behavora.com/widget/loader.js"
+  data-site-id="site_..."
+  data-api-url="https://app.behavora.com"
+  data-track-api-version="v2"
+></script>
+```
+
+- **Attribute present (`v2`)** — the widget uses `/api/v2/track`.
+- **Attribute missing** — the widget falls back to its default, `/api/v1/track`.
+
+On the `/env` page, the **Track API Version** card has a toggle that adds or removes this attribute. The choice is saved in `localStorage` (`behavora_track_api_version`), applies to every environment (Dev, Prod, Local), and the page reloads so the script tag is re-rendered. The debug panel logs track requests for both versions.
+
 ### Adding a new environment
 
 Add an entry to `ENVIRONMENTS` in `src/config/environments.ts` and update the `Environment` type. Then add the corresponding `NEXT_PUBLIC_DEMO_BEHAVORA_*` variables to `.env` and `.env.example`.

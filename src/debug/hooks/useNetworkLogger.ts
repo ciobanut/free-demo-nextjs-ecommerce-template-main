@@ -35,7 +35,7 @@ export const useNetworkLogger = () => {
             }
 
             // Check if this is a track or predict request
-            const isTrackRequest = url.includes(`${apiBaseUrl}/api/v1/track`);
+            const isTrackRequest = url.includes(`${apiBaseUrl}/api/v1/track`) || url.includes(`${apiBaseUrl}/api/v2/track`);
             const isPredictRequest = url.includes(`${apiBaseUrl}/api/v1/predict/`);
 
             if (isTrackRequest || isPredictRequest) {

@@ -11,6 +11,7 @@ import {
   readStoredConsent,
   saveConsentConfig,
 } from "@/config/consent";
+import { getTrackApiVersion, saveTrackApiVersion, TrackApiVersion } from "@/config/trackApi";
 
 const Environment = () => {
   const { currentEnvironment, setEnvironment } = useEnvironment();
@@ -36,7 +37,10 @@ const Environment = () => {
     sessionStorage: null,
   })
 
+  const [trackApiVersion, setTrackApiVersion] = useState<TrackApiVersion>('v1')
+
   useEffect(() => {
+    setTrackApiVersion(getTrackApiVersion())
     setIsLocalhost(
       window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     )
@@ -102,6 +106,11 @@ const Environment = () => {
     }
 
     saveConsentConfig({ storage: consentStorage, key, value })
+    window.location.reload()
+  }
+
+  const handleToggleTrackApiVersion = () => {
+    saveTrackApiVersion(trackApiVersion === 'v2' ? 'v1' : 'v2')
     window.location.reload()
   }
 
@@ -334,6 +343,43 @@ const Environment = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          <div className="mt-7.5 w-full bg-white rounded-xl shadow-1">
+            <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
+              <p className="font-medium text-xl text-dark">Track API Version</p>
+              <p className="text-xs text-dark-4 mt-1">
+                Adds or removes <code>data-track-api-version=&quot;v2&quot;</code> on the widget script.
+                When set, the widget sends events to <code>/api/v2/track</code>; otherwise it uses the default <code>/api/v1/track</code>.
+                Toggling reloads the page so the script attribute updates.
+              </p>
+            </div>
+
+            <div className="p-4 sm:p-7.5">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-medium text-dark">Use track API v2</p>
+                  <p className="text-xs text-dark-4 mt-1">
+                    Active endpoint:{' '}
+                    <span className="font-mono">{envConfig.apiBaseUrl}/api/{trackApiVersion}/track</span>
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={trackApiVersion === 'v2'}
+                  aria-label="Use track API v2"
+                  onClick={handleToggleTrackApiVersion}
+                  className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${trackApiVersion === 'v2' ? 'bg-blue' : 'bg-gray-4'
+                    }`}
+                >
+                  <span
+                    className={`inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ${trackApiVersion === 'v2' ? 'translate-x-5.5' : 'translate-x-0.5'
+                      }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
 
