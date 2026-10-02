@@ -24,11 +24,13 @@ import PreLoader from "@/components/Common/PreLoader";
 import EnvBadge from "@/components/EnvBadge";
 import { getEnvironmentConfig } from "@/config/environments";
 import { getConsentConfig } from "@/config/consent";
+import { getTrackApiVersion } from "@/config/trackApi";
 
 const BehavoraScript = () => {
   const { currentEnvironment } = useEnvironment();
   const envConfig = getEnvironmentConfig(currentEnvironment);
   const consentConfig = getConsentConfig();
+  const trackApiVersion = getTrackApiVersion();
 
   return (
     <Script
@@ -41,6 +43,7 @@ const BehavoraScript = () => {
       data-consent-storage={consentConfig.storage}
       data-consent-key={consentConfig.key}
       data-consent-value={consentConfig.value}
+      data-track-api-version={trackApiVersion === "v2" ? "v2" : undefined}
       strategy="afterInteractive"
     />
   );
