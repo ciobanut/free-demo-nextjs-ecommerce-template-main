@@ -11,7 +11,7 @@ import {
   readStoredConsent,
   saveConsentConfig,
 } from "@/config/consent";
-import { getTrackApiVersion, saveTrackApiVersion, TrackApiVersion } from "@/config/trackApi";
+import { getTrackUrl, saveTrackUrl } from "@/config/trackApi";
 
 const Environment = () => {
   const { currentEnvironment, setEnvironment } = useEnvironment();
@@ -37,10 +37,13 @@ const Environment = () => {
     sessionStorage: null,
   })
 
-  const [trackApiVersion, setTrackApiVersion] = useState<TrackApiVersion>('v1')
+  const [trackUrl, setTrackUrl] = useState('')
+  const [trackUrlInput, setTrackUrlInput] = useState('')
 
   useEffect(() => {
-    setTrackApiVersion(getTrackApiVersion())
+    const savedTrackUrl = getTrackUrl()
+    setTrackUrl(savedTrackUrl)
+    setTrackUrlInput(savedTrackUrl)
     setIsLocalhost(
       window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     )
@@ -109,8 +112,11 @@ const Environment = () => {
     window.location.reload()
   }
 
-  const handleToggleTrackApiVersion = () => {
-    saveTrackApiVersion(trackApiVersion === 'v2' ? 'v1' : 'v2')
+  const handleSaveTrackUrl = (e: React.FormEvent) => {
+    e.preventDefault()
+    const value = trackUrlInput.trim()
+    saveTrackUrl(value)
+    setTrackUrl(value)
     window.location.reload()
   }
 
@@ -348,38 +354,43 @@ const Environment = () => {
 
           <div className="mt-7.5 w-full bg-white rounded-xl shadow-1">
             <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
-              <p className="font-medium text-xl text-dark">Track API Version</p>
+              <p className="font-medium text-xl text-dark">Track Endpoint</p>
               <p className="text-xs text-dark-4 mt-1">
-                Adds or removes <code>data-track-api-version=&quot;v2&quot;</code> on the widget script.
-                When set, the widget sends events to <code>/api/v2/track</code>; otherwise it uses the default <code>/api/v1/track</code>.
-                Toggling reloads the page so the script attribute updates.
+                Sets <code>data-track-url</code> on the widget script, so events are sent to this exact URL.
+                Leave empty to use the widget default built from <code>data-api-url</code>.
+                Saving reloads the page so the script attribute updates.
               </p>
             </div>
 
             <div className="p-4 sm:p-7.5">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium text-dark">Use track API v2</p>
-                  <p className="text-xs text-dark-4 mt-1">
+              <form onSubmit={handleSaveTrackUrl}>
+                <div className="w-full mb-5">
+                  <label htmlFor="trackUrl" className="block mb-2.5">
+                    Track URL
+                  </label>
+                  <input
+                    type="text"
+                    id="trackUrl"
+                    value={trackUrlInput}
+                    onChange={(e) => setTrackUrlInput(e.target.value)}
+                    placeholder={`${envConfig.apiBaseUrl}/api/v1/track`}
+                    className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                  />
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <button
+                    type="submit"
+                    className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                  >
+                    Save &amp; reload
+                  </button>
+                  <p className="text-xs text-dark-4">
                     Active endpoint:{' '}
-                    <span className="font-mono">{envConfig.apiBaseUrl}/api/{trackApiVersion}/track</span>
+                    <span className="font-mono">{trackUrl || `${envConfig.apiBaseUrl}/api/v1/track`}</span>
                   </p>
                 </div>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={trackApiVersion === 'v2'}
-                  aria-label="Use track API v2"
-                  onClick={handleToggleTrackApiVersion}
-                  className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${trackApiVersion === 'v2' ? 'bg-blue' : 'bg-gray-4'
-                    }`}
-                >
-                  <span
-                    className={`inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ${trackApiVersion === 'v2' ? 'translate-x-5.5' : 'translate-x-0.5'
-                      }`}
-                  />
-                </button>
-              </div>
+              </form>
             </div>
           </div>
 

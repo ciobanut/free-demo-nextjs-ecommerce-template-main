@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../redux/store";
 import { addTrackRequest, addPredictRequest, setVisitorId } from "../../redux/features/debug-slice";
 import { useEnvironment } from "../../app/context/EnvironmentContext";
 import { getEnvironmentConfig } from "../../config/environments";
+import { getTrackUrl } from "../../config/trackApi";
 
 export const useNetworkLogger = () => {
     const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ export const useNetworkLogger = () => {
         dispatch(setVisitorId(visitorId));
 
         const { apiBaseUrl } = getEnvironmentConfig(currentEnvironment);
+        const trackUrl = getTrackUrl();
         const originalFetch = window.fetch;
 
         window.fetch = async (...args) => {
@@ -35,7 +37,7 @@ export const useNetworkLogger = () => {
             }
 
             // Check if this is a track or predict request
-            const isTrackRequest = url.includes(`${apiBaseUrl}/api/v1/track`) || url.includes(`${apiBaseUrl}/api/v2/track`);
+            const isTrackRequest = url.includes(`${apiBaseUrl}/api/v1/track`) || url.includes(`${apiBaseUrl}/api/v2/track`) || (trackUrl !== '' && url.includes(trackUrl));
             const isPredictRequest = url.includes(`${apiBaseUrl}/api/v1/predict/`);
 
             if (isTrackRequest || isPredictRequest) {

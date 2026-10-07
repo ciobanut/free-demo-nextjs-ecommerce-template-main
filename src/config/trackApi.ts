@@ -1,24 +1,21 @@
-export type TrackApiVersion = 'v1' | 'v2'
+export const TRACK_URL_KEY = 'behavora_track_url'
 
-export const TRACK_API_VERSION_KEY = 'behavora_track_api_version'
-
-// v1 is the widget's default when data-track-api-version is not set on the script tag
-export const DEFAULT_TRACK_API_VERSION: TrackApiVersion = 'v1'
-
-export const getTrackApiVersion = (): TrackApiVersion => {
-  if (typeof window === 'undefined') return DEFAULT_TRACK_API_VERSION
+// Empty means the widget uses its default endpoint built from data-api-url
+export const getTrackUrl = (): string => {
+  if (typeof window === 'undefined') return ''
 
   try {
-    return localStorage.getItem(TRACK_API_VERSION_KEY) === 'v2' ? 'v2' : DEFAULT_TRACK_API_VERSION
+    return localStorage.getItem(TRACK_URL_KEY) ?? ''
   } catch {
-    return DEFAULT_TRACK_API_VERSION
+    return ''
   }
 }
 
-export const saveTrackApiVersion = (version: TrackApiVersion) => {
-  if (version === DEFAULT_TRACK_API_VERSION) {
-    localStorage.removeItem(TRACK_API_VERSION_KEY)
+export const saveTrackUrl = (url: string) => {
+  const value = url.trim()
+  if (!value) {
+    localStorage.removeItem(TRACK_URL_KEY)
   } else {
-    localStorage.setItem(TRACK_API_VERSION_KEY, version)
+    localStorage.setItem(TRACK_URL_KEY, value)
   }
 }
