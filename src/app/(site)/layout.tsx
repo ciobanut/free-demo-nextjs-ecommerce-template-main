@@ -19,18 +19,50 @@ import { EnvironmentProvider, useEnvironment } from "../context/EnvironmentConte
 
 import Script from "next/script";
 import ScrollToTop from "@/components/Common/ScrollToTop";
-import CookieBanner from "@/components/Common/CookieBanner";
 import PreLoader from "@/components/Common/PreLoader";
 import EnvBadge from "@/components/EnvBadge";
 import { getEnvironmentConfig } from "@/config/environments";
 import { getConsentConfig } from "@/config/consent";
 import { getTrackUrl } from "@/config/trackApi";
+import { consentLoaderBootstrapScript } from "@/config/consentLoaderBootstrap";
+
+declare global {
+  interface Window {
+    __behavoraConsentLoaderReady?: boolean;
+  }
+}
 
 const BehavoraScript = () => {
   const { currentEnvironment } = useEnvironment();
   const envConfig = getEnvironmentConfig(currentEnvironment);
   const consentConfig = getConsentConfig();
   const trackUrl = getTrackUrl();
+  const [consentReady, setConsentReady] = useState(false);
+
+  useEffect(() => {
+    if (window.__behavoraConsentLoaderReady) {
+      setConsentReady(true);
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      if (window.__behavoraConsentLoaderReady) {
+        window.clearInterval(interval);
+        setConsentReady(true);
+      }
+    }, 50);
+    const timeout = window.setTimeout(() => {
+      window.clearInterval(interval);
+      setConsentReady(true);
+    }, 4000);
+
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
+  if (!consentReady) return null;
 
   return (
     <Script
@@ -78,7 +110,6 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
               </ModalProvider>
             </CartModalProvider>
             <ScrollToTop />
-            <CookieBanner />
             <Footer />
           </>
         )}
@@ -95,6 +126,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <script
+          id="behavora-consent-loader"
+          dangerouslySetInnerHTML={{ __html: consentLoaderBootstrapScript() }}
+        />
+      </head>
       <body>
         <EnvironmentProvider>
           <LayoutContent>{children}</LayoutContent>
