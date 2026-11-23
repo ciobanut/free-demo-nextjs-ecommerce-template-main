@@ -401,6 +401,7 @@ const QuickViewModal = () => {
                 </button>
 
                 <button
+                  aria-label="button for favorite select"
                   className={`inline-flex items-center gap-2 font-medium text-white bg-dark py-3 px-6 rounded-md ease-out duration-200 hover:bg-opacity-95 `}
                 >
                   <svg

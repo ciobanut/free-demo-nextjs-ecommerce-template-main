@@ -169,7 +169,7 @@ const SingleItem = ({ item }: { item: Product }) => {
             onClick={() => {
               handleItemToWishList();
             }}
-            aria-label="button for add to fav"
+            aria-label="button for favorite select"
             id="addFavOne"
             className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 ${isInWishlist ? "bg-red text-white" : "bg-white text-dark hover:text-white hover:bg-blue"}`}
           >
