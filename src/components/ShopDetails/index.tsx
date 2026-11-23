@@ -717,6 +717,7 @@ const ShopDetails = () => {
                       <button
                         type="button"
                         onClick={handleToggleWishlist}
+                        aria-label="button for favorite select"
                         className={`flex items-center justify-center w-12 h-12 rounded-md border ease-out duration-200 ${isInWishlist ? "bg-red border-red text-white" : "border-gray-3 text-dark hover:text-white hover:bg-dark hover:border-transparent"}`}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="currentColor" className="w-full">
